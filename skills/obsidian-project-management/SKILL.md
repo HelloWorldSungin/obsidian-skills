@@ -272,18 +272,17 @@ Tasks support the following custom properties:
 
 ## Task Relationships & Sub-Tasks
 
-TaskNotes doesn't have native parent-child hierarchy, but supports relationships through multiple approaches:
+TaskNotes supports sub-tasks through the `projects` field with wikilinks:
 
-### 1. Related Field (Recommended for Sub-Tasks)
+### 1. Projects Field (Native TaskNotes Sub-Tasks)
 
-Link parent and child tasks using the `related` field:
+Use the `projects` field with wikilink syntax to create sub-task relationships:
 
 **Parent Task:**
 ```yaml
 ---
 task-id: "TASK-007"
 title: "Monitor Dashboard Transformation"
-related: ["TASK-007.1", "TASK-007.2", "TASK-007.3"]
 ---
 
 ## Sub-Tasks
@@ -297,12 +296,18 @@ related: ["TASK-007.1", "TASK-007.2", "TASK-007.3"]
 ---
 task-id: "TASK-007.1"
 title: "Remove JT Indicator Signal Monitoring"
-related: ["TASK-007"]
+projects: ["[[TASK-007-monitor-dashboard-transformation]]"]
 ---
 
 ## Parent Task
-Part of: [[TASK-007]]
+Part of: [[TASK-007-monitor-dashboard-transformation]]
 ```
+
+**Key Points:**
+- Use `projects: ["[[Parent-Task-ID]]"]` in child tasks
+- TaskNotes will automatically show sub-tasks in the parent's relationships widget
+- The "Add subtask" button in TaskNotes will recognize tasks with matching project links
+- Parent tasks can list sub-tasks in their body with wiki links
 
 **Naming Convention:**
 - Parent: `TASK-007` or `EPIC-001`
