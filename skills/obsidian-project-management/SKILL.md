@@ -144,8 +144,8 @@ Create sub-tasks with automatic ID generation and parent linking.
 
 **Features:**
 - Auto-generates next sub-task ID (TASK-007.1, TASK-007.2...)
-- Links child to parent in `related` field
-- Updates parent's `related` field
+- Creates sub-task in `TaskNotes/Tasks/Sub-Tasks/` directory
+- Links child to parent via `projects` field with wikilink
 - Returns file paths of created tasks
 
 #### `/task-link`
@@ -312,6 +312,12 @@ Part of: [[TASK-007-monitor-dashboard-transformation]]
 **Naming Convention:**
 - Parent: `TASK-007` or `EPIC-001`
 - Children: `TASK-007.1`, `TASK-007.2`, `TASK-007.3`
+
+**File Organization:**
+- **Parent tasks:** Stored in `TaskNotes/Tasks/`
+- **Sub-tasks:** Stored in `TaskNotes/Tasks/Sub-Tasks/`
+- This keeps the main Tasks folder clean while maintaining all functionality
+- TaskNotes finds tasks by the `#task` tag regardless of subdirectory
 
 ### 2. BlockedBy Dependencies
 
