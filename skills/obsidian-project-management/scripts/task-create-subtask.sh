@@ -7,6 +7,7 @@
 # Configuration
 VAULT_PATH="/Users/sunginkim/Documents/Obsidian Vault"
 TASKS_DIR="$VAULT_PATH/TaskNotes/Tasks"
+SUBTASKS_DIR="$VAULT_PATH/TaskNotes/Tasks/Sub-Tasks"
 TEMPLATE_FILE="$HOME/.config/opencode/skills/obsidian-project-management/templates/task-template.md"
 
 # Parameters
@@ -71,8 +72,11 @@ if [[ -z "$WORK_TYPE" && -n "$PARENT_WORK_TYPE" ]]; then
   WORK_TYPE="$PARENT_WORK_TYPE"
 fi
 
+# Ensure Sub-Tasks directory exists
+mkdir -p "$SUBTASKS_DIR"
+
 # Find existing sub-tasks and determine next number
-EXISTING_SUBS=$(find "$TASKS_DIR" -name "${PARENT}.*-*.md" -type f 2>/dev/null | wc -l)
+EXISTING_SUBS=$(find "$SUBTASKS_DIR" -name "${PARENT}.*-*.md" -type f 2>/dev/null | wc -l)
 NEXT_NUM=$((EXISTING_SUBS + 1))
 
 # Function to create single sub-task
@@ -84,7 +88,7 @@ create_subtask() {
   SUB_ID="${PARENT}.${sub_num}"
   SLUG=$(echo "$sub_title" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-' | cut -c1-40)
   FILENAME="${SUB_ID}-${SLUG}.md"
-  FILEPATH="$TASKS_DIR/$FILENAME"
+  FILEPATH="$SUBTASKS_DIR/$FILENAME"
   
   if [[ -f "$FILEPATH" ]]; then
     echo "Warning: Task file already exists: $FILENAME"
