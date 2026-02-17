@@ -121,6 +121,51 @@ Manually archive a completed task to TaskNotes/Archive/.
 
 **Note:** TaskNotes can also auto-archive completed tasks based on plugin settings.
 
+#### `/task-create-subtask`
+
+Create sub-tasks with automatic ID generation and parent linking.
+
+**Single sub-task:**
+```bash
+/task-create-subtask \
+  parent=TASK-007 \
+  title="Create OHLCV monitor" \
+  description="Monitor data freshness" \
+  work-type="deployment"
+```
+
+**Multiple sub-tasks:**
+```bash
+/task-create-subtask \
+  parent=TASK-007 \
+  titles="Subtask 1, Subtask 2, Subtask 3" \
+  descriptions="Desc 1, Desc 2, Desc 3"
+```
+
+**Features:**
+- Auto-generates next sub-task ID (TASK-007.1, TASK-007.2...)
+- Links child to parent in `related` field
+- Updates parent's `related` field
+- Returns file paths of created tasks
+
+#### `/task-link`
+
+Link existing tasks without creating new ones.
+
+**Usage:**
+```bash
+/task-link \
+  task=TASK-001 \
+  related=["TASK-002", "TASK-003"] \
+  blockedBy=["TASK-004"]
+```
+
+**Parameters:**
+- `task` (required): Task ID to update
+- `related`: List of related task IDs
+- `blockedBy`: List of blocking dependencies
+- `projects`: List of project note links
+
 ### Session Commands
 
 #### `/session-create`
@@ -131,13 +176,22 @@ Create a new build journal session with task integration.
 - `number` (required): Session number
 - `date`: Session date (default: today)
 - `prompt-tasks`: Whether to prompt for related tasks (default: yes)
+- `epic`: Link session to an epic/parent task (optional)
 
-**Example:**
+**Examples:**
 ```bash
 /session-create number=227
+/session-create number=227 epic=TASK-007
 ```
 
-This command will:
+**With epic parameter:**
+When you specify an epic, the command will:
+1. Create `Build-Journal/Session-227.md`
+2. Check epic for pending sub-tasks
+3. Prompt: "This epic has 3 pending sub-tasks. Link to session?"
+4. If yes, populate `related-tasks` with sub-task IDs
+
+**Without epic parameter:**
 1. Create `Build-Journal/Session-227.md`
 2. Prompt: "Create related tasks for this session? (y/n)"
 3. If yes, enter interactive task creation mode
@@ -200,18 +254,120 @@ Tasks support the following custom properties:
 
 | Property | Type | Description | Values |
 |----------|------|-------------|--------|
-| `task-id` | text | Unique identifier | TASK-001, TASK-002, etc. |
+| `task-id` | text | Unique identifier | TASK-001, EPIC-001, etc. |
 | `status` | text | Current status | backlog, todo, in-progress, blocked, review, done |
 | `priority` | text | Importance | critical, high, medium, low |
 | `project` | text | Project | trading-signal-ai, tinyclaw, ark-trade, ark-line, infrastructure |
-| `work-type` | text | Work category | research, model-training, deployment, infrastructure, documentation |
+| `work-type` | text | Work category | epic, story, research, model-training, deployment, infrastructure, documentation |
 | `component` | text | Infra component | ct100, ct110, ct120, ct200, none |
 | `urgency` | text | Time sensitivity | blocking, high, normal, low |
 | `due` | date | Deadline | YYYY-MM-DD |
-| `scheduled` | date | Planned date | YYYY-MM-DD |
+| `scheduled` | date | Planned work date | YYYY-MM-DD |
 | `session` | text | Related session | Session number (e.g., "227") |
-| `related` | list | Related tasks | ["TASK-001", "TASK-002"] |
+| `related` | list | Related task IDs | ["TASK-001", "TASK-002"] |
+| `blockedBy` | list | Blocking dependencies | ["TASK-001"] |
+| `projects` | list | Project note links | ["[[Epic-001]]"] |
+| `epic` | text | Parent epic ID | EPIC-001 |
 | `created` | date | Creation date | YYYY-MM-DD |
+
+## Task Relationships & Sub-Tasks
+
+TaskNotes doesn't have native parent-child hierarchy, but supports relationships through multiple approaches:
+
+### 1. Related Field (Recommended for Sub-Tasks)
+
+Link parent and child tasks using the `related` field:
+
+**Parent Task:**
+```yaml
+---
+task-id: "TASK-007"
+title: "Monitor Dashboard Transformation"
+related: ["TASK-007.1", "TASK-007.2", "TASK-007.3"]
+---
+
+## Sub-Tasks
+- [[TASK-007.1]] Remove JT Indicator Signal Monitoring
+- [[TASK-007.2]] Create OHLCV Service Health Monitor  
+- [[TASK-007.3]] Create Futures Data Monitor
+```
+
+**Child Task:**
+```yaml
+---
+task-id: "TASK-007.1"
+title: "Remove JT Indicator Signal Monitoring"
+related: ["TASK-007"]
+---
+
+## Parent Task
+Part of: [[TASK-007]]
+```
+
+**Naming Convention:**
+- Parent: `TASK-007` or `EPIC-001`
+- Children: `TASK-007.1`, `TASK-007.2`, `TASK-007.3`
+
+### 2. BlockedBy Dependencies
+
+Use TaskNotes' native `blockedBy` field for sequential dependencies:
+
+```yaml
+---
+task-id: "TASK-008.2"
+title: "Implement Engine Selection Logic"
+blockedBy: ["TASK-008.1"]  # Must complete 008.1 first
+---
+```
+
+### 3. Epic/Story Hierarchy
+
+For large features broken into deliverables:
+
+**Epic:**
+```yaml
+---
+task-id: "EPIC-001"
+title: "Dashboard Redesign"
+work-type: "epic"
+related: ["STORY-001", "STORY-002", "STORY-003"]
+---
+```
+
+**Story:**
+```yaml
+---
+task-id: "STORY-001"
+title: "Add real-time P&L chart"
+work-type: "story"
+epic: "EPIC-001"
+related: ["EPIC-001"]
+---
+```
+
+### 4. Project-Based Grouping
+
+Link tasks to project notes for grouping:
+
+```yaml
+---
+title: "Create OHLCV Monitor"
+projects: ["[[Monitor-Dashboard-Redesign]]"]
+---
+```
+
+### 5. Follow-up Chain
+
+Track post-completion follow-ups:
+
+```yaml
+---
+task-id: "TASK-101"
+title: "Monitor V2 model performance (1 week)"
+related: ["TASK-100"]
+scheduled: "2026-03-01"
+---
+```
 
 ## Task ID System
 
