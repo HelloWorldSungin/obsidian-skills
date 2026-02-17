@@ -258,7 +258,8 @@ Tasks support the following custom properties:
 | `status` | text | Current status | backlog, todo, in-progress, blocked, review, done |
 | `priority` | text | Importance | critical, high, medium, low |
 | `project` | text | Project | trading-signal-ai, tinyclaw, ark-trade, ark-line, infrastructure |
-| `work-type` | text | Work category | epic, story, research, model-training, deployment, infrastructure, documentation |
+| `work-type` | text | Work category | research, model-training, deployment, infrastructure, documentation |
+| `task-type` | text | Task hierarchy level | epic, story, task |
 | `component` | text | Infra component | ct100, ct110, ct120, ct200, none |
 | `urgency` | text | Time sensitivity | blocking, high, normal, low |
 | `due` | date | Deadline | YYYY-MM-DD |
@@ -314,9 +315,10 @@ Part of: [[TASK-007-monitor-dashboard-transformation]]
 - Children: `TASK-007.1`, `TASK-007.2`, `TASK-007.3`
 
 **File Organization:**
-- **Parent tasks:** Stored in `TaskNotes/Tasks/`
-- **Sub-tasks:** Stored in `TaskNotes/Tasks/Sub-Tasks/`
-- This keeps the main Tasks folder clean while maintaining all functionality
+- **Epics:** Stored in `TaskNotes/Tasks/Epic/` - High-level initiatives spanning multiple sprints
+- **Stories:** Stored in `TaskNotes/Tasks/Story/` - User-focused features completed within one sprint
+- **Tasks:** Stored in `TaskNotes/Tasks/` - Granular, technical, or operational steps
+- Hierarchy: Epic → Story → Task
 - TaskNotes finds tasks by the `#task` tag regardless of subdirectory
 
 ### 2. BlockedBy Dependencies

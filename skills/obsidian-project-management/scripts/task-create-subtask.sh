@@ -7,7 +7,9 @@
 # Configuration
 VAULT_PATH="/Users/sunginkim/Documents/Obsidian Vault"
 TASKS_DIR="$VAULT_PATH/TaskNotes/Tasks"
-SUBTASKS_DIR="$VAULT_PATH/TaskNotes/Tasks/Sub-Tasks"
+EPIC_DIR="$VAULT_PATH/TaskNotes/Tasks/Epic"
+STORY_DIR="$VAULT_PATH/TaskNotes/Tasks/Story"
+TASK_TYPE_DIR="$VAULT_PATH/TaskNotes/Tasks"
 TEMPLATE_FILE="$HOME/.config/opencode/skills/obsidian-project-management/templates/task-template.md"
 
 # Parameters
