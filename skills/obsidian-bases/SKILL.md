@@ -643,6 +643,50 @@ filters:
         - 'due != ""'
 ```
 
+## Querying Bases from CLI
+
+Use the [Obsidian CLI](https://help.obsidian.md/cli) to interact with Bases from the command line. Requires Obsidian 1.10+ running.
+
+### List all bases
+
+```bash
+obsidian bases
+```
+
+### Query a base view
+
+Returns structured data from a base view. **Important:** Use `path=` (vault-relative path), not `file=`.
+
+```bash
+# JSON output (default)
+obsidian base:query path="Projects/Tasks.base" format=json
+
+# Other formats: csv, tsv, md, paths
+obsidian base:query path="Trading-Signal-AI/Session-Logs/Sessions.base" format=csv
+```
+
+### List views in a base
+
+```bash
+obsidian base:views path="Projects/Tasks.base"
+```
+
+### Create items in a base
+
+```bash
+obsidian base:create path="Projects/Tasks.base"
+```
+
+### Format options
+
+| Format | Description |
+|--------|-------------|
+| `json` | JSON array of objects (default) |
+| `csv` | Comma-separated values |
+| `tsv` | Tab-separated values |
+| `md` | Markdown table |
+| `paths` | File paths only |
+
 ## References
 
 - [Bases Syntax](https://help.obsidian.md/bases/syntax)
