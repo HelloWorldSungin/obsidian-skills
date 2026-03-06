@@ -1,0 +1,10 @@
+{
+  "eval_id": 7,
+  "eval_name": "typed-properties",
+  "prompt": "In my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault, create a note called 'Property-Type-Test' in Trading-Signal-AI/Research/. Set these typed properties on it: a date property 'created' set to 2026-03-06, a number property 'priority' set to 5, a checkbox property 'reviewed' set to false, and a list property 'categories' set to [\"ml\", \"benchmark\", \"eval\"]. Then read back the properties to confirm they were set correctly.",
+  "assertions": [
+    {"name": "used_cli_create_and_property_set", "description": "Agent used 'obsidian create' and 'obsidian property:set' with type= parameter"},
+    {"name": "used_type_parameter", "description": "Agent used type=date, type=number, type=checkbox on property:set calls"},
+    {"name": "properties_verified", "description": "Agent read back properties to confirm they were set"}
+  ]
+}

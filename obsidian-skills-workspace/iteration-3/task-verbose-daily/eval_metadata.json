@@ -1,0 +1,10 @@
+{
+  "eval_id": 8,
+  "eval_name": "task-verbose-daily",
+  "prompt": "In my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault, I want to see all my incomplete tasks grouped by which file they're in (with line numbers). Also show me how many tasks are in today's daily note. Finally, give me the total count of all done tasks in the vault.",
+  "assertions": [
+    {"name": "used_tasks_verbose", "description": "Agent used 'obsidian tasks todo verbose'"},
+    {"name": "used_tasks_daily", "description": "Agent used 'obsidian tasks daily'"},
+    {"name": "used_tasks_done_total", "description": "Agent used 'obsidian tasks done total'"}
+  ]
+}

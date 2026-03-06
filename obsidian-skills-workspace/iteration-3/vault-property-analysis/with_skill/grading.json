@@ -1,0 +1,10 @@
+{
+  "eval_id": 9,
+  "eval_name": "vault-property-analysis",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Used 'obsidian properties sort=count counts' vault-wide", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" properties sort=count counts' — returned 45 properties with usage counts sorted by frequency."},
+    {"text": "Used 'obsidian outline format=json' for Session-274", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" outline file=\"Session-274\" format=json' — returned 19 headings with level, heading text, and line numbers in JSON."},
+    {"text": "Output contains all 3: property counts, active file tags, JSON outline", "passed": true, "evidence": "All three sections present: (1) 45 properties sorted by count, (2) 4 tags on active file via 'tags active', (3) full JSON outline of Session-274."}
+  ]
+}

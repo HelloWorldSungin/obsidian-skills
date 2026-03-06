@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "skill_name": "obsidian-cli",
+    "skill_path": "/Users/sunginkim/GIT3/ArkNode-AI/external/obsidian-skills/skills/obsidian-cli/",
+    "executor_model": "claude-opus-4-6",
+    "timestamp": "2026-03-06T15:00:00Z",
+    "iteration": 3,
+    "evals_run": [7, 8, 9],
+    "runs_per_configuration": 1,
+    "note": "Testing newly documented CLI features: property:set type=, tasks verbose/daily, properties sort=count counts, outline format=json"
+  },
+
+  "runs": [
+    {
+      "eval_id": 7,
+      "eval_name": "Typed Properties",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 45.4,
+        "tokens": 19207,
+        "tool_calls": 12,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Used obsidian create + property:set with type= parameter", "passed": true, "evidence": "Used 'obsidian create' then 4x 'obsidian property:set' with type=date, type=number, type=checkbox, type=list."},
+        {"text": "Used type= parameter on property:set calls", "passed": true, "evidence": "Explicitly used type=date, type=number, type=checkbox, type=list on each call."},
+        {"text": "Read back properties to verify", "passed": true, "evidence": "Read back with 'obsidian properties' in both YAML and JSON formats."}
+      ]
+    },
+    {
+      "eval_id": 7,
+      "eval_name": "Typed Properties",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 3,
+        "total": 3,
+        "time_seconds": 37.6,
+        "tokens": 10250,
+        "tool_calls": 7,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Used obsidian create + property:set with type= parameter", "passed": false, "evidence": "Used Bash heredoc to write YAML frontmatter directly. No obsidian CLI."},
+        {"text": "Used type= parameter on property:set calls", "passed": false, "evidence": "No property:set calls — wrote YAML types by convention. Obsidian may not register correct property types."},
+        {"text": "Read back properties to verify", "passed": false, "evidence": "Used Read tool, not obsidian CLI."}
+      ]
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "Task Verbose/Daily",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 288.4,
+        "tokens": 43018,
+        "tool_calls": 14,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Used 'obsidian tasks todo verbose' for grouped tasks with line numbers", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" tasks todo verbose' — 498 tasks across 68 files."},
+        {"text": "Used 'obsidian tasks daily' for daily note tasks", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" tasks daily total' — 0 tasks."},
+        {"text": "Used 'obsidian tasks done total' for completed task count", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" tasks done total' — 131 tasks."}
+      ]
+    },
+    {
+      "eval_id": 8,
+      "eval_name": "Task Verbose/Daily",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 3,
+        "total": 3,
+        "time_seconds": 368.8,
+        "tokens": 55292,
+        "tool_calls": 30,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Used 'obsidian tasks todo verbose' for grouped tasks with line numbers", "passed": false, "evidence": "Used Python script with os.walk + regex. 30 tool calls, 55K tokens."},
+        {"text": "Used 'obsidian tasks daily' for daily note tasks", "passed": false, "evidence": "Python script checked daily note file directly."},
+        {"text": "Used 'obsidian tasks done total' for completed task count", "passed": false, "evidence": "Python regex counted '- [x]'. Same result (131) but via 55K tokens vs 43K."}
+      ]
+    },
+    {
+      "eval_id": 9,
+      "eval_name": "Vault Property Analysis",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 50.7,
+        "tokens": 19649,
+        "tool_calls": 7,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Used 'obsidian properties sort=count counts' vault-wide", "passed": true, "evidence": "Ran vault-wide properties query with sort=count counts."},
+        {"text": "Used 'obsidian outline format=json' for Session-274", "passed": true, "evidence": "Ran outline file=\"Session-274\" format=json — 19 headings in JSON."},
+        {"text": "Output contains all 3 queries answered", "passed": true, "evidence": "All three: property counts, active file tags, JSON outline."}
+      ]
+    },
+    {
+      "eval_id": 9,
+      "eval_name": "Vault Property Analysis",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 1,
+        "failed": 2,
+        "total": 3,
+        "time_seconds": 102.9,
+        "tokens": 31460,
+        "tool_calls": 13,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Used 'obsidian properties sort=count counts' vault-wide", "passed": false, "evidence": "Used Python yaml.safe_load() to parse frontmatter manually. 13 tool calls, 31K tokens."},
+        {"text": "Used 'obsidian outline format=json' for Session-274", "passed": false, "evidence": "Used Python heading regex + stack algorithm."},
+        {"text": "Output contains all 3 queries answered", "passed": true, "evidence": "All three present via Python scripts."}
+      ]
+    }
+  ],
+
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "tokens": {"mean": 27291, "stddev": 13679, "min": 19207, "max": 43018},
+      "time_seconds": {"mean": 128.2, "stddev": 137.0, "min": 45.4, "max": 288.4},
+      "tool_calls": {"mean": 11.0, "stddev": 3.6, "min": 7, "max": 14}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.11, "stddev": 0.19, "min": 0.0, "max": 0.33},
+      "tokens": {"mean": 32334, "stddev": 22571, "min": 10250, "max": 55292},
+      "time_seconds": {"mean": 169.8, "stddev": 175.3, "min": 37.6, "max": 368.8},
+      "tool_calls": {"mean": 16.7, "stddev": 12.1, "min": 7, "max": 30}
+    },
+    "delta": {
+      "pass_rate": "+0.89 (100% vs 11%)",
+      "tokens": "-16% (27K vs 32K avg)",
+      "time_seconds": "-24% (128s vs 170s avg)",
+      "tool_calls": "-34% (11.0 vs 16.7 avg)"
+    }
+  },
+
+  "notes": [
+    "PERFECT SCORE: With-skill achieved 100% pass rate (9/9 assertions) across all 3 new feature tests.",
+    "TYPED PROPERTIES: With-skill used property:set type= correctly for all 4 types (date, number, checkbox, list). Without-skill wrote raw YAML which works at the file level but doesn't register property types in Obsidian's index.",
+    "TASK VERBOSE/DAILY: With-skill used exactly the 3 documented CLI commands (tasks todo verbose, tasks daily total, tasks done total). Without-skill wrote a 40-line Python script to walk all files (30 tool calls, 55K tokens vs 14 calls, 43K tokens).",
+    "VAULT PROPERTY ANALYSIS: With-skill completed all 3 queries in 7 tool calls / 50s / 20K tokens. Without-skill needed 13 calls / 103s / 31K tokens — 2x slower and 60% more tokens.",
+    "KEY INSIGHT: The new features (type=, verbose, daily, sort=count counts, format=json) are 100% skill-dependent — without the skill, agents have zero knowledge of these parameters and fall back to manual scripting.",
+    "COMBINED WITH ITERATION 2: Overall skill pass rate across all 10 evals is (0.90 * 7 + 1.0 * 3) / 10 = 93%."
+  ]
+}

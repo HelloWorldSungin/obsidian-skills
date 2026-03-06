@@ -1,0 +1,10 @@
+{
+  "eval_id": 7,
+  "eval_name": "typed-properties",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Used obsidian create + property:set with type= parameter", "passed": true, "evidence": "Used 'obsidian create' to make the note, then 4x 'obsidian property:set' with type=date, type=number, type=checkbox, type=list."},
+    {"text": "Used type= parameter on property:set calls", "passed": true, "evidence": "Explicitly used type=date, type=number, type=checkbox, type=list on each property:set call."},
+    {"text": "Read back properties to verify (obsidian properties or property:read)", "passed": true, "evidence": "Read back with 'obsidian properties file=...' in both YAML and JSON formats to verify types."}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "eval_id": 9,
+  "eval_name": "vault-property-analysis",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "Used 'obsidian properties sort=count counts' vault-wide", "passed": false, "evidence": "Used Python yaml.safe_load() to parse frontmatter from all .md files manually. 13 tool calls, 31K tokens vs 7 CLI calls, 20K tokens."},
+    {"text": "Used 'obsidian outline format=json' for Session-274", "passed": false, "evidence": "Used Python script with heading regex + stack-based algorithm to build hierarchical JSON. Produced nested (children) structure vs CLI's flat array."},
+    {"text": "Output contains all 3: property counts, active file tags, JSON outline", "passed": true, "evidence": "All three present: (1) 45 properties sorted by count (via Python), (2) 4 tags from active file (via workspace.json parsing), (3) hierarchical JSON outline."}
+  ]
+}

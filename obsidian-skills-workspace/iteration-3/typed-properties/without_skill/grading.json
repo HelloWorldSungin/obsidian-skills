@@ -1,0 +1,10 @@
+{
+  "eval_id": 7,
+  "eval_name": "typed-properties",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "Used obsidian create + property:set with type= parameter", "passed": false, "evidence": "Used Bash heredoc (cat > file << 'ENDOFFILE') to write YAML frontmatter directly. No obsidian CLI used."},
+    {"text": "Used type= parameter on property:set calls", "passed": false, "evidence": "No property:set calls at all — wrote YAML types by convention (bare int, bare bool, YAML list). Types are correct in YAML but Obsidian may not register them with the correct property type."},
+    {"text": "Read back properties to verify (obsidian properties or property:read)", "passed": false, "evidence": "Used Read tool to verify file contents, not obsidian CLI."}
+  ]
+}

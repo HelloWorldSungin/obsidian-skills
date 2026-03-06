@@ -21,7 +21,7 @@ The `obsidian` CLI talks directly to Obsidian's live index — it knows about li
 | Create a note | `obsidian create name="Note" content="..." silent` | `Write` tool |
 | Edit properties | `obsidian property:set name="status" value="done" file="Note"` | `Edit` tool on frontmatter |
 | Search vault | `obsidian search query="keyword"` | `Grep` across vault files |
-| List files | `obsidian files path="Folder/"` | `Glob` pattern matching |
+| List files | `obsidian files folder="Folder/"` | `Glob` pattern matching |
 | Query structured data | `obsidian base:query path="Views/Tasks.base"` | Reading `.base` + scanning all matching files |
 | Vault health metrics | `obsidian unresolved total` / `orphans total` / `deadends total` | Manual link analysis with Grep |
 
@@ -48,7 +48,7 @@ When creating notes in a vault, use `obsidian create` + `property:set` + `append
 
 ```bash
 # Create with initial content
-obsidian create name="My Note" path="Projects/" content="# My Note\n\nContent here." silent
+obsidian create name="My Note" path="Projects/" content="# My Note\n\nContent here."
 
 # Set frontmatter properties
 obsidian property:set name="tags" value="[\"project\",\"active\"]" file="My Note"
@@ -102,21 +102,25 @@ obsidian vault="Work" search query="deadline"
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `read` | Read file content | `obsidian read file="Meeting Notes"` |
-| `create` | Create a new note | `obsidian create name="Sprint 42" content="# Sprint 42" silent` |
+| `create` | Create a new note | `obsidian create name="Sprint 42" content="# Sprint 42"` |
 | `append` | Add content to end of file | `obsidian append file="Log" content="\n- Entry"` |
 | `prepend` | Add content to start of file | `obsidian prepend file="Log" content="# Updated\n"` |
-| `delete` | Delete a file | `obsidian delete file="Old Draft" trash` |
+| `delete` | Delete a file (trash by default) | `obsidian delete file="Old Draft"` |
 | `move` | Move file to another folder | `obsidian move file="Note" to="Archive/"` |
 | `rename` | Rename a file | `obsidian rename file="Draft" name="Final"` |
 | `open` | Open a file in the UI | `obsidian open file="Dashboard" newtab` |
 | `file` | File info (size, dates, path) | `obsidian file file="README"` |
-| `files` | List files in vault/folder | `obsidian files path="Projects/" ext=md` |
-| `folder` | Create a folder | `obsidian folder path="Projects/2026-Q1"` |
-| `folders` | List all folders | `obsidian folders` |
+| `files` | List files in vault/folder | `obsidian files folder="Projects/" ext=md` |
+| `folder` | Folder info (files, size) | `obsidian folder path="Projects/" info=files` |
+| `folders` | List all folders | `obsidian folders folder="Projects/" total` |
 
-Key parameters for `create`: `name`, `content`, `path` (folder), `template`, `overwrite`, `silent`.
+Key parameters for `create`: `name`, `content`, `path` (folder), `template`, `overwrite`, `open`, `newtab`.
 
-Key parameters for `files`: `path` (folder), `ext` (filter by extension), `sort` (name/modified/created), `total`.
+Key parameters for `files`: `folder` (filter by folder), `ext` (filter by extension), `total`.
+
+Key parameters for `delete`: `permanent` (skip trash, delete permanently — default moves to trash).
+
+The `append` and `prepend` commands accept an `inline` flag to add content without a newline separator.
 
 ---
 
@@ -125,20 +129,30 @@ Key parameters for `files`: `path` (folder), `ext` (filter by extension), `sort`
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `search` | Full-text search | `obsidian search query="machine learning" limit=10` |
-| `search:context` | Search with surrounding context | `obsidian search:context query="TODO" lines=3` |
+| `search:context` | Search with matching line context | `obsidian search:context query="TODO" limit=10` |
 | `search:open` | Open search in Obsidian UI | `obsidian search:open query="refactor"` |
-| `backlinks` | List notes linking to a file | `obsidian backlinks file="API Design"` |
-| `links` | List outgoing links from a file | `obsidian links file="Index"` |
+| `backlinks` | List notes linking to a file | `obsidian backlinks file="API Design" counts` |
+| `links` | List outgoing links from a file | `obsidian links file="Index" total` |
 | `tag` | Info for a single tag | `obsidian tag name="project" verbose` |
 | `tags` | List all tags in vault | `obsidian tags sort=count counts` |
-| `aliases` | List all aliases | `obsidian aliases` |
-| `outline` | Show heading structure | `obsidian outline file="Architecture"` |
-| `wordcount` | Word/char count for a file | `obsidian wordcount file="Draft"` |
-| `recents` | Recently opened files | `obsidian recents limit=5` |
+| `aliases` | List all aliases | `obsidian aliases verbose` |
+| `outline` | Show heading structure | `obsidian outline file="Architecture" format=json` |
+| `wordcount` | Word/char count for a file | `obsidian wordcount file="Draft" words` |
+| `recents` | Recently opened files | `obsidian recents total` |
 | `random` | Open a random note | `obsidian random folder="Projects/"` |
-| `random:read` | Read a random note | `obsidian random:read` |
+| `random:read` | Read a random note | `obsidian random:read folder="Projects/"` |
 
-Key parameters for `search`: `query`, `limit`, `path` (scope to folder), `ext`, `sort`.
+Key parameters for `search`: `query`, `limit`, `path` (scope to folder), `case` (case sensitive), `format=text|json`.
+
+Key parameters for `backlinks`: `counts` (include link counts), `total`, `format=json|tsv|csv`.
+
+Key parameters for `outline`: `format=tree|md|json` (default: tree), `total` (heading count only).
+
+Key parameters for `tags`: `file` or `path` (scope to note/folder), `counts`, `sort=count`, `format=json|tsv|csv`, `active` (active file only).
+
+Key parameters for `aliases`: `file` (scope to note), `total`, `verbose` (include file paths), `active`.
+
+Key parameters for `wordcount`: `words` (word count only), `characters` (char count only).
 
 ---
 
@@ -148,9 +162,13 @@ Find structural issues in your vault.
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `deadends` | Notes with no outgoing links | `obsidian deadends limit=20` |
-| `orphans` | Notes with no incoming links | `obsidian orphans` |
-| `unresolved` | Broken/unresolved wikilinks | `obsidian unresolved` |
+| `deadends` | Notes with no outgoing links | `obsidian deadends total` |
+| `orphans` | Notes with no incoming links | `obsidian orphans total` |
+| `unresolved` | Broken/unresolved wikilinks | `obsidian unresolved verbose` |
+
+Key parameters for `deadends`/`orphans`: `total`, `all` (include non-markdown files).
+
+Key parameters for `unresolved`: `total`, `counts` (include link counts), `verbose` (include source files), `format=json|tsv|csv`.
 
 ---
 
@@ -166,6 +184,8 @@ Find structural issues in your vault.
 
 Use `date=YYYY-MM-DD` to target a specific day: `obsidian daily:read date=2026-02-20`.
 
+Daily commands accept `paneType=tab|split|window` to control where the note opens. `daily:append` and `daily:prepend` accept `inline` (no newline) and `open` flags.
+
 ---
 
 ## Properties
@@ -174,10 +194,14 @@ Operate on YAML frontmatter properties.
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `properties` | List all properties on a file | `obsidian properties file="Project X"` |
+| `properties` | List properties (file or vault-wide) | `obsidian properties file="Project X"` |
 | `property:read` | Read a single property | `obsidian property:read name="status" file="Project X"` |
 | `property:set` | Set a property value | `obsidian property:set name="status" value="done" file="Project X"` |
 | `property:remove` | Remove a property | `obsidian property:remove name="draft" file="Project X"` |
+
+Key parameters for `properties` (vault-wide when no file given): `name` (specific property count), `sort=count`, `counts` (include occurrence counts), `format=yaml|json|tsv`, `active` (active file only).
+
+Key parameters for `property:set`: `type=text|list|number|checkbox|date|datetime` to specify the property type explicitly.
 
 For list-type properties, `property:set` replaces the entire value. Use JSON for arrays: `value="[\"tag1\",\"tag2\"]"`.
 
@@ -189,36 +213,46 @@ Operates on `- [ ]` / `- [x]` checkbox items in note content (NOT frontmatter pr
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `task` | Toggle/set task status | `obsidian task line=5 done file="Sprint"` |
-| `tasks` | List/filter tasks | `obsidian tasks todo` |
+| `task` | Show or update a task | `obsidian task line=5 done file="Sprint"` |
+| `tasks` | List/filter tasks | `obsidian tasks todo verbose` |
 
-Key parameters for `tasks`: `todo` (incomplete only), `done` (completed only), `file` (scope to note), `path` (scope to folder), `tag` (filter by tag), `limit`, `total`.
+Key parameters for `task`: `line` (line number), `file`/`path`, `toggle`, `done`, `todo`, `status="<char>"` (custom status like `/`, `?`, `!`), `daily` (target daily note), `ref=<path:line>` (task reference).
+
+Key parameters for `tasks`: `todo` (incomplete only), `done` (completed only), `status="<char>"` (filter by status character), `file`/`path` (scope), `verbose` (group by file with line numbers), `format=json|tsv|csv`, `total`, `active` (active file), `daily` (daily note tasks).
 
 ```bash
-# List all incomplete tasks in a folder
-obsidian tasks todo path="Projects/" limit=20
+# List all incomplete tasks in a folder, grouped by file
+obsidian tasks todo path="Projects/" verbose
 
 # Mark a specific task as done
 obsidian task line=12 done file="Sprint 42"
 
-# Count all tasks in daily note
-obsidian tasks file="2026-02-23" total
+# Set custom status character (e.g., in-progress)
+obsidian task line=8 status="/" file="Sprint 42"
+
+# Count tasks in today's daily note
+obsidian tasks daily total
+
+# Get tasks as JSON for processing
+obsidian tasks todo format=json
 ```
 
 ---
 
 ## Bases
 
-Interact with Obsidian Bases (database views). **Important:** Bases use `path=` not `file=`.
+Interact with Obsidian Bases (database views). Bases accept both `file=` and `path=`.
 
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `bases` | List all bases in vault | `obsidian bases` |
 | `base:views` | List views in a base | `obsidian base:views path="Bases/Projects.base"` |
-| `base:create` | Create a new base | `obsidian base:create path="Bases/Tasks.base"` |
+| `base:create` | Create a new item in a base | `obsidian base:create path="Bases/Tasks.base" name="New Task" content="# New Task"` |
 | `base:query` | Query base data | `obsidian base:query path="Bases/Projects.base" format=md` |
 
-Supported `format` values: `json`, `csv`, `tsv`, `md`, `paths`. Use `view=` to query a specific view.
+Key parameters for `base:create`: `name` (new file name), `content` (initial content), `view` (target view), `open`, `newtab`.
+
+Supported `format` values for `base:query`: `json`, `csv`, `tsv`, `md`, `paths`. Use `view=` to query a specific view.
 
 ---
 
@@ -226,8 +260,12 @@ Supported `format` values: `json`, `csv`, `tsv`, `md`, `paths`. Use `view=` to q
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `bookmark` | Add/remove a bookmark | `obsidian bookmark file="Important Note"` |
-| `bookmarks` | List all bookmarks | `obsidian bookmarks` |
+| `bookmark` | Add a bookmark | `obsidian bookmark file="Important Note"` |
+| `bookmarks` | List all bookmarks | `obsidian bookmarks verbose` |
+
+Key parameters for `bookmark`: `file` (file path), `subpath` (heading or block within file), `folder` (folder path), `search` (search query), `url` (URL), `title` (bookmark title).
+
+Key parameters for `bookmarks`: `total`, `verbose` (include bookmark types), `format=json|tsv|csv`.
 
 ---
 
@@ -237,12 +275,14 @@ Access Obsidian's built-in file recovery snapshots.
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `history` | Show version history summary | `obsidian history file="Config"` |
-| `history:list` | List available snapshots | `obsidian history:list file="Config"` |
+| `history` | List file history versions | `obsidian history file="Config"` |
+| `history:list` | List files with history | `obsidian history:list` |
 | `history:read` | Read a specific snapshot | `obsidian history:read file="Config" version=2` |
 | `history:restore` | Restore a snapshot | `obsidian history:restore file="Config" version=2` |
 | `history:open` | Open file recovery UI | `obsidian history:open file="Config"` |
-| `diff` | Diff current vs. a snapshot | `obsidian diff file="Config" version=2` |
+| `diff` | Diff between versions | `obsidian diff file="Config" from=1 to=3` |
+
+Key parameters for `diff`: `from` (version to diff from), `to` (version to diff to), `filter=local|sync` (filter by version source).
 
 ---
 
@@ -252,13 +292,15 @@ Manage Obsidian Sync (requires active Sync subscription).
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `sync` | Trigger a sync | `obsidian sync` |
+| `sync` | Pause or resume sync | `obsidian sync on` |
 | `sync:status` | Check sync status | `obsidian sync:status` |
-| `sync:history` | List sync history | `obsidian sync:history limit=10` |
+| `sync:history` | List sync version history for a file | `obsidian sync:history file="Note"` |
 | `sync:read` | Read a synced version | `obsidian sync:read file="Note" version=3` |
 | `sync:restore` | Restore a synced version | `obsidian sync:restore file="Note" version=3` |
-| `sync:deleted` | List remotely deleted files | `obsidian sync:deleted` |
+| `sync:deleted` | List remotely deleted files | `obsidian sync:deleted total` |
 | `sync:open` | Open sync history UI | `obsidian sync:open file="Note"` |
+
+Key parameters for `sync`: `on` (resume), `off` (pause).
 
 ---
 
@@ -266,9 +308,13 @@ Manage Obsidian Sync (requires active Sync subscription).
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `templates` | List available templates | `obsidian templates` |
+| `templates` | List available templates | `obsidian templates total` |
 | `template:read` | Read a template's content | `obsidian template:read name="Meeting Notes"` |
-| `template:insert` | Insert template into a file | `obsidian template:insert name="Meeting Notes" file="Today's Meeting"` |
+| `template:insert` | Insert template into active file | `obsidian template:insert name="Meeting Notes"` |
+
+Key parameters for `template:read`: `resolve` (resolve template variables like `{{date}}`, `{{title}}`), `title` (title value for variable resolution).
+
+Note: `template:insert` inserts into the **active file** — it does not accept a `file=` parameter. Open the target file first with `obsidian open`.
 
 ---
 
@@ -276,15 +322,19 @@ Manage Obsidian Sync (requires active Sync subscription).
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `plugins` | List installed plugins | `obsidian plugins` |
+| `plugins` | List installed plugins | `obsidian plugins filter=community versions` |
 | `plugin` | Plugin info | `obsidian plugin id=dataview` |
 | `plugin:enable` | Enable a plugin | `obsidian plugin:enable id=dataview` |
 | `plugin:disable` | Disable a plugin | `obsidian plugin:disable id=dataview` |
-| `plugin:install` | Install from community | `obsidian plugin:install id=obsidian-tasks` |
+| `plugin:install` | Install from community | `obsidian plugin:install id=obsidian-tasks enable` |
 | `plugin:reload` | Reload a plugin (dev cycle) | `obsidian plugin:reload id=my-plugin` |
 | `plugin:uninstall` | Uninstall a plugin | `obsidian plugin:uninstall id=old-plugin` |
 | `plugins:enabled` | List enabled plugins only | `obsidian plugins:enabled filter=community` |
 | `plugins:restrict` | Toggle restricted mode | `obsidian plugins:restrict on` |
+
+Key parameters for `plugins`/`plugins:enabled`: `filter=core|community`, `versions` (include version numbers), `format=json|tsv|csv`.
+
+Key parameters for `plugin:install`: `enable` (enable immediately after install).
 
 ---
 
@@ -294,7 +344,7 @@ Manage Obsidian Sync (requires active Sync subscription).
 |---------|---------|---------|
 | `theme` | Show active theme or theme info | `obsidian theme name="Minimal"` |
 | `themes` | List installed themes | `obsidian themes` |
-| `theme:install` | Install a theme | `obsidian theme:install name="Minimal"` |
+| `theme:install` | Install a theme | `obsidian theme:install name="Minimal" enable` |
 | `theme:set` | Activate a theme | `obsidian theme:set name="Minimal"` |
 | `theme:uninstall` | Remove a theme | `obsidian theme:uninstall name="Old Theme"` |
 | `snippets` | List CSS snippets | `obsidian snippets` |
@@ -308,9 +358,15 @@ Manage Obsidian Sync (requires active Sync subscription).
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `tabs` | List open tabs | `obsidian tabs` |
+| `tabs` | List open tabs | `obsidian tabs ids` |
 | `tab:open` | Open a file in a new tab | `obsidian tab:open file="Dashboard"` |
-| `workspace` | Save/load workspace layouts | `obsidian workspace name="Research"` |
+| `workspace` | Show workspace tree | `obsidian workspace ids` |
+
+Key parameters for `tabs`: `ids` (include tab IDs).
+
+Key parameters for `tab:open`: `group` (tab group ID), `file` (file to open), `view` (view type).
+
+Key parameters for `workspace`: `ids` (include workspace item IDs).
 
 ---
 
@@ -318,11 +374,15 @@ Manage Obsidian Sync (requires active Sync subscription).
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `vault` | Current vault info | `obsidian vault` |
-| `vaults` | List all known vaults | `obsidian vaults` |
+| `vault` | Current vault info | `obsidian vault info=size` |
+| `vaults` | List all known vaults | `obsidian vaults verbose` |
 | `reload` | Reload the vault (re-index) | `obsidian reload` |
 | `restart` | Restart Obsidian | `obsidian restart` |
 | `version` | Show Obsidian version | `obsidian version` |
+
+Key parameters for `vault`: `info=name|path|files|folders|size` (return specific info only).
+
+Key parameters for `vaults`: `total`, `verbose` (include vault paths).
 
 ---
 
@@ -333,9 +393,13 @@ Execute any Obsidian command by ID.
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `command` | Execute a command | `obsidian command id="editor:toggle-bold"` |
-| `commands` | List all commands | `obsidian commands query="toggle"` |
-| `hotkey` | Get hotkey for a command | `obsidian hotkey id="editor:toggle-bold"` |
-| `hotkeys` | List all hotkeys | `obsidian hotkeys` |
+| `commands` | List all commands | `obsidian commands filter="editor:toggle"` |
+| `hotkey` | Get hotkey for a command | `obsidian hotkey id="editor:toggle-bold" verbose` |
+| `hotkeys` | List all hotkeys | `obsidian hotkeys format=json` |
+
+Key parameters for `commands`: `filter=<prefix>` (filter by command ID prefix).
+
+Key parameters for `hotkeys`: `total`, `verbose` (show if custom), `format=json|tsv|csv`, `all` (include commands without hotkeys).
 
 ---
 
@@ -349,10 +413,16 @@ Execute any Obsidian command by ID.
 | `dev:errors` | List uncaught errors | `obsidian dev:errors` |
 | `dev:screenshot` | Capture screenshot | `obsidian dev:screenshot path=screenshot.png` |
 | `dev:dom` | Inspect DOM elements | `obsidian dev:dom selector=".workspace-leaf" text` |
-| `dev:css` | Read computed CSS | `obsidian dev:css selector=".workspace-leaf" prop=background-color` |
+| `dev:css` | Inspect CSS with source locations | `obsidian dev:css selector=".workspace-leaf" prop=background-color` |
 | `dev:mobile` | Toggle mobile emulation | `obsidian dev:mobile on` |
 | `dev:cdp` | Chrome DevTools Protocol | `obsidian dev:cdp method="Runtime.evaluate" params='{"expression":"1+1"}'` |
 | `dev:debug` | Attach/detach debugger | `obsidian dev:debug on` |
+
+Key parameters for `dev:console`: `level=log|warn|error|info|debug`, `limit` (default 50), `clear` (clear the buffer).
+
+Key parameters for `dev:errors`: `clear` (clear the error buffer).
+
+Key parameters for `dev:dom`: `selector` (CSS selector), `text` (text content), `inner` (innerHTML), `all` (all matches), `attr=<name>`, `css=<prop>`, `total`.
 
 ---
 
@@ -388,7 +458,7 @@ obsidian base:views path="TaskNotes/Views/tasks-default.base"
 # List all unresolved links
 obsidian unresolved --copy
 # Create a missing note
-obsidian create name="Missing Page" content="# Missing Page\nTODO: fill in" silent
+obsidian create name="Missing Page" content="# Missing Page\nTODO: fill in"
 ```
 
 ### Vault health check (5 CLI calls)
@@ -414,7 +484,7 @@ obsidian property:set name="version" value="2.0" file="Project B"
 ### Create a note from template and tag it
 
 ```bash
-obsidian create name="2026-02-23 Standup" template="Standup" silent
+obsidian create name="2026-02-23 Standup" template="Standup"
 obsidian property:set name="type" value="standup" file="2026-02-23 Standup"
 obsidian property:set name="status" value="draft" file="2026-02-23 Standup"
 ```

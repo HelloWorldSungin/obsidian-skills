@@ -1,0 +1,10 @@
+{
+  "eval_id": 8,
+  "eval_name": "task-verbose-daily",
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "Used 'obsidian tasks todo verbose' for grouped tasks with line numbers", "passed": false, "evidence": "Used Python script with os.walk + regex to scan all .md files for '- [ ]' patterns. No obsidian CLI used."},
+    {"text": "Used 'obsidian tasks daily' for daily note tasks", "passed": false, "evidence": "Python script checked daily note file directly. No 'obsidian tasks daily' command."},
+    {"text": "Used 'obsidian tasks done total' for completed task count", "passed": false, "evidence": "Python regex counted '- [x]' across all files. No obsidian CLI used. Got same result (131) but via 30 tool calls and 55K tokens."}
+  ]
+}

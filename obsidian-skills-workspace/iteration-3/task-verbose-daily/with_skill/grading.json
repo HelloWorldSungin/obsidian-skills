@@ -1,0 +1,10 @@
+{
+  "eval_id": 8,
+  "eval_name": "task-verbose-daily",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Used 'obsidian tasks todo verbose' for grouped tasks with line numbers", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" tasks todo verbose' — returned 498 tasks across 68 files with line numbers."},
+    {"text": "Used 'obsidian tasks daily' for daily note tasks", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" tasks daily total' — returned 0 tasks in today's daily note."},
+    {"text": "Used 'obsidian tasks done total' for completed task count", "passed": true, "evidence": "Ran 'obsidian vault=\"vault\" tasks done total' — returned 131 completed tasks."}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "eval_id": 9,
+  "eval_name": "vault-property-analysis",
+  "prompt": "I want to understand the property landscape of my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault. Show me: (1) all property names sorted by how often they're used, with counts, (2) what tags are on the active file, and (3) a detailed outline of the file 'Session-274' in JSON format so I can see its structure programmatically.",
+  "assertions": [
+    {"name": "used_properties_vault_wide", "description": "Agent used 'obsidian properties sort=count counts' vault-wide"},
+    {"name": "used_outline_json", "description": "Agent used 'obsidian outline format=json'"},
+    {"name": "all_three_queries_answered", "description": "Output has all 3: property counts, active file tags, JSON outline"}
+  ]
+}
