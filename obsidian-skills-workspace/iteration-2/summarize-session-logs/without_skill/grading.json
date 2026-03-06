@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used CLI (outline/properties) instead of reading full files", "passed": false, "evidence": "Used Read tool on 5 full session files — 45K tokens consumed."},
+    {"text": "Output covers all 5 sessions (270-274) with topic/status", "passed": true, "evidence": "All 5 sessions covered with detailed summaries."},
+    {"text": "Output under 2000 chars, no raw file dumps", "passed": false, "evidence": "4351 chars — detailed per-session summaries exceed limit."}
+  ]
+}

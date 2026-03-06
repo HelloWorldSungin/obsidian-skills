@@ -1,0 +1,29 @@
+{
+  "eval_id": 2,
+  "eval_name": "query-base-data",
+  "run": "with_skill",
+  "output_chars": 8039,
+  "expectations": [
+    {
+      "text": "used_base_query",
+      "passed": true,
+      "evidence": "Output header explicitly states: 'Queried from Trading-Signal-AI/Session-Logs/Sessions.base via obsidian base:query'. The structured output format is consistent with CLI-based querying."
+    },
+    {
+      "text": "shows_complete_sessions",
+      "passed": true,
+      "evidence": "Shows 35 sessions with complete/completed status, from Session-230 (2026-02-17) to Session-274 (2026-03-06). Notes both 'complete' (22) and 'completed' (13) status variants."
+    },
+    {
+      "text": "structured_output",
+      "passed": true,
+      "evidence": "Results presented in a structured markdown table with columns (#, Session, Date, Status, Tags), plus a weekly breakdown with sub-tables and summary notes."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

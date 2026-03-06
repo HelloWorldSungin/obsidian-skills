@@ -1,0 +1,6 @@
+{
+  "eval_id": 6,
+  "eval_name": "web-extract-summarize",
+  "prompt": "see evals.json id=6",
+  "assertions": []
+}

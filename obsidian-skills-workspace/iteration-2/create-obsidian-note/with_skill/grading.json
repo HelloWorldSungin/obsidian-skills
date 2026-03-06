@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian create CLI instead of Write tool", "passed": true, "evidence": "Used obsidian create with overwrite and silent flags, followed by property:set for frontmatter."},
+    {"text": "Valid YAML frontmatter with tags, status, date", "passed": true, "evidence": "Frontmatter has tags: [research, analysis, benchmark], status: draft, date: 2026-03-06."},
+    {"text": "Uses wikilinks, callout, mermaid block", "passed": true, "evidence": "Contains [[Session-274]], [[Session-273]], > [!tip] Placeholder, mermaid flowchart TD."}
+  ]
+}

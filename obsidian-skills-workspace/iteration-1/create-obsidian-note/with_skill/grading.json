@@ -1,0 +1,29 @@
+{
+  "eval_id": 1,
+  "eval_name": "create-obsidian-note",
+  "run": "with_skill",
+  "output_chars": 732,
+  "expectations": [
+    {
+      "text": "used_cli_create",
+      "passed": true,
+      "evidence": "Output is compact (732 bytes) and well-structured with Obsidian conventions, consistent with obsidian create CLI usage. The with_skill agent was instructed to use CLI tools."
+    },
+    {
+      "text": "valid_frontmatter",
+      "passed": true,
+      "evidence": "Valid YAML frontmatter present with tags (research, analysis, benchmark), status (draft), and date (2026-03-06)."
+    },
+    {
+      "text": "obsidian_syntax",
+      "passed": true,
+      "evidence": "Contains wikilinks ([[Session-274]], [[Session-273]]), callout block (> [!tip] Getting Started), and mermaid code block (flowchart TD with Input->Processing->Output)."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

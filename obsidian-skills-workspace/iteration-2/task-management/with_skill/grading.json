@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian tasks or base:query for listing tasks", "passed": true, "evidence": "Used obsidian base:query path='TaskNotes/Views/tasks-default.base' format=md — major improvement over iteration-1 Glob+Read approach."},
+    {"text": "Used obsidian create for task creation", "passed": true, "evidence": "Used obsidian create + property:set CLI commands to create ArkSignal-036."},
+    {"text": "New task has proper frontmatter: task-id, status, priority, project, tags", "passed": true, "evidence": "ArkSignal-036 with task-id, status: todo, priority: high, project: trading-signal-ai, tags: [task]."}
+  ]
+}

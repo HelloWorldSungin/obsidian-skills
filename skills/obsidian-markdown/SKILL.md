@@ -15,6 +15,28 @@ Obsidian uses a combination of Markdown flavors:
 - [LaTeX](https://www.latex-project.org/) for math
 - Obsidian-specific extensions (wikilinks, callouts, embeds, etc.)
 
+## Creating Notes via CLI
+
+When creating `.md` files in an Obsidian vault, prefer `obsidian create` over the `Write` tool — it updates Obsidian's index immediately. Use `\n` for newlines and `\t` for tabs in the `content` parameter.
+
+```bash
+# Create with inline content (escape newlines)
+obsidian create name="My Note" path="Projects/" content="# My Note\n\n## Overview\nContent with [[wikilinks]] and #tags.\n\n> [!tip] Callout\n> Important info here." silent
+
+# Set properties separately (cleaner for complex frontmatter)
+obsidian property:set name="tags" value="[\"project\",\"active\"]" file="My Note"
+obsidian property:set name="status" value="draft" file="My Note"
+
+# Append more content
+obsidian append file="My Note" content="\n## Details\nMore content here."
+```
+
+**Content escaping rules for CLI:**
+- `\n` → newline, `\t` → tab
+- Wrap the `content` value in double quotes if it contains spaces or special characters
+- Wikilinks, callouts, and mermaid blocks all work inside `content="..."`
+- For very long content, consider `create` with minimal content + `append` for each section
+
 ## Basic Formatting
 
 ### Paragraphs and Line Breaks

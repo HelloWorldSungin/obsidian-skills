@@ -1,0 +1,29 @@
+{
+  "eval_id": 5,
+  "eval_name": "create-canvas",
+  "run": "without_skill",
+  "output_chars": 1265,
+  "expectations": [
+    {
+      "text": "valid_json_canvas",
+      "passed": true,
+      "evidence": "Valid JSON with 'nodes' array (3 text nodes) and 'edges' array (2 edges). Each node has id, type, text, x, y, width, height, and color fields."
+    },
+    {
+      "text": "correct_node_colors",
+      "passed": true,
+      "evidence": "signal_generation: color '4' (green), position_manager: color '3' (yellow), execution_engine: color '1' (red). Matches spec: green=4, yellow/orange=2or3, red=1."
+    },
+    {
+      "text": "proper_edges",
+      "passed": true,
+      "evidence": "2 edges present: (1) signal_generation -> position_manager with label 'scored signals', (2) position_manager -> execution_engine with label 'order instructions'. Both have fromNode, toNode, fromSide, toSide, and label."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "eval_id": 0,
+  "eval_name": "summarize-session-logs",
+  "run": "without_skill",
+  "output_chars": 4853,
+  "expectations": [
+    {
+      "text": "used_cli_or_minimal_reads",
+      "passed": false,
+      "evidence": "Without-skill run used only Read/Grep/Glob/Write tools. Output contains detailed per-session summaries with full paragraph descriptions, indicating full file reads rather than CLI-based extraction."
+    },
+    {
+      "text": "all_sessions_covered",
+      "passed": true,
+      "evidence": "All 5 sessions covered: Session-270 through Session-274. Each includes date, status, tags, and a detailed summary paragraph."
+    },
+    {
+      "text": "concise_output",
+      "passed": false,
+      "evidence": "Output is 4853 characters, far exceeding the 2000-character threshold."
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 2,
+    "total": 3,
+    "pass_rate": 0.33
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian CLI commands", "passed": false, "evidence": "Used Bash/Grep/Read for manual file scanning — no CLI."},
+    {"text": "Reports all 5 metrics", "passed": true, "evidence": "Reports broken links (104), orphans (47), dead ends (17), total files (258), top tags with counts."},
+    {"text": "Completed in 5 or fewer tool calls", "passed": false, "evidence": "14 tool calls, 196s, 31K tokens — manual scanning approach."}
+  ]
+}

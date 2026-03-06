@@ -1,11 +1,33 @@
 ---
 name: obsidian-bases
-description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+description: Create, edit, and query Obsidian Bases (.base files) with views, filters, formulas, and summaries. ALWAYS query existing bases via `obsidian base:query` CLI before reading individual note files — this returns structured data from Obsidian's live index without loading file contents. Use when working with .base files, querying vault data, creating database-like views, or when the user mentions Bases, table views, card views, filters, formulas, or structured data queries in Obsidian.
 ---
 
 # Obsidian Bases Skill
 
-This skill enables skills-compatible agents to create and edit valid Obsidian Bases (`.base` files) including views, filters, formulas, and all related configurations.
+This skill enables skills-compatible agents to create, edit, and query Obsidian Bases (`.base` files) including views, filters, formulas, and all related configurations.
+
+## Query-First: Use CLI Before Reading Files
+
+When you need structured data from a vault, **always check for an existing Base first** and query it via CLI. This returns data from Obsidian's live index without reading individual files — saving significant tokens.
+
+```bash
+# List all bases in the vault
+obsidian bases
+
+# Query a base — returns structured data (markdown table, JSON, CSV, etc.)
+obsidian base:query path="TaskNotes/Views/tasks-default.base" format=md
+
+# Query a specific view within a base
+obsidian base:query path="TaskNotes/Views/tasks-default.base" view="Active Tasks" format=json
+
+# List available views in a base
+obsidian base:views path="TaskNotes/Views/tasks-default.base"
+```
+
+**Format options:** `json` (default), `csv`, `tsv`, `md` (markdown table), `paths` (file paths only).
+
+This is especially important for TaskNotes-style task management. Instead of globbing `TaskNotes/Tasks/**/*.md` and reading each file, query the base view that already filters and structures the data.
 
 ## Overview
 
@@ -642,50 +664,6 @@ filters:
         - 'priority == 1'
         - 'due != ""'
 ```
-
-## Querying Bases from CLI
-
-Use the [Obsidian CLI](https://help.obsidian.md/cli) to interact with Bases from the command line. Requires Obsidian 1.10+ running.
-
-### List all bases
-
-```bash
-obsidian bases
-```
-
-### Query a base view
-
-Returns structured data from a base view. **Important:** Use `path=` (vault-relative path), not `file=`.
-
-```bash
-# JSON output (default)
-obsidian base:query path="Projects/Tasks.base" format=json
-
-# Other formats: csv, tsv, md, paths
-obsidian base:query path="Trading-Signal-AI/Session-Logs/Sessions.base" format=csv
-```
-
-### List views in a base
-
-```bash
-obsidian base:views path="Projects/Tasks.base"
-```
-
-### Create items in a base
-
-```bash
-obsidian base:create path="Projects/Tasks.base"
-```
-
-### Format options
-
-| Format | Description |
-|--------|-------------|
-| `json` | JSON array of objects (default) |
-| `csv` | Comma-separated values |
-| `tsv` | Tab-separated values |
-| `md` | Markdown table |
-| `paths` | File paths only |
 
 ## References
 

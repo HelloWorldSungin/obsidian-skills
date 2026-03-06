@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used defuddle parse --md instead of WebFetch", "passed": false, "evidence": "Used WebFetch — no defuddle."},
+    {"text": "Summary covers filters, views, formulas, properties", "passed": true, "evidence": "Covers filters, views, formulas, properties, functions, data types."},
+    {"text": "No raw HTML tags or nav elements in output", "passed": true, "evidence": "Clean markdown output from WebFetch."}
+  ]
+}

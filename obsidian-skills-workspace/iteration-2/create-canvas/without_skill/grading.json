@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Valid JSON with nodes and edges arrays", "passed": true, "evidence": "Valid JSON structure with nodes and edges arrays."},
+    {"text": "Correct color presets: green=4, yellow/orange=2or3, red=1", "passed": true, "evidence": "Colors match: 4 (green), 3 (yellow), 1 (red)."},
+    {"text": "2 edges connecting 3 nodes with labels", "passed": true, "evidence": "Edges have labels, toEnd=arrow, correct connections. IDs are descriptive strings (non-spec) but edges are functional."}
+  ]
+}

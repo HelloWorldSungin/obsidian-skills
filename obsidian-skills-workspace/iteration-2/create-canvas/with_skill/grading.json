@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Valid JSON with nodes and edges arrays", "passed": true, "evidence": "Well-formed JSON with 3 nodes and 2 edges."},
+    {"text": "Correct color presets: green=4, yellow/orange=2or3, red=1", "passed": true, "evidence": "Signal Gen: 4, Position Mgr: 3, Execution: 1."},
+    {"text": "2 edges connecting 3 nodes with labels", "passed": true, "evidence": "Scored Signals and Validated Orders edges with fromSide/toSide/toEnd=arrow. 16-char hex IDs."}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "eval_id": 4,
+  "eval_name": "vault-health-check",
+  "prompt": "see evals.json id=4",
+  "assertions": []
+}

@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian create CLI instead of Write tool", "passed": false, "evidence": "Used Write tool to create the file directly."},
+    {"text": "Valid YAML frontmatter with tags, status, date", "passed": true, "evidence": "Has title, tags: [research, analysis, benchmark], status: draft, date: 2026-03-06."},
+    {"text": "Uses wikilinks, callout, mermaid block", "passed": true, "evidence": "Contains [[Session-274]], [[Session-273]], > [!tip], mermaid flowchart."}
+  ]
+}

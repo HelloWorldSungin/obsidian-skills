@@ -1,0 +1,29 @@
+{
+  "eval_id": 2,
+  "eval_name": "query-base-data",
+  "run": "without_skill",
+  "output_chars": 11885,
+  "expectations": [
+    {
+      "text": "used_base_query",
+      "passed": false,
+      "evidence": "Method section explicitly states: 'Reading the Sessions.base YAML file to understand the database schema' and 'Scanning all Session-*.md files'. Used manual file reading, not obsidian base:query CLI."
+    },
+    {
+      "text": "shows_complete_sessions",
+      "passed": true,
+      "evidence": "Shows 36 sessions with complete/completed status (including Session-228 which with_skill missed). Includes session titles, dates, statuses, and tags. Notes status variants: 22 'complete' and 14 'completed'."
+    },
+    {
+      "text": "structured_output",
+      "passed": true,
+      "evidence": "Well-structured with summary table, full session table (#, Session, Date, Status, Title, Tags), sessions grouped by date, top tags table, and data quality notes."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.67
+  }
+}

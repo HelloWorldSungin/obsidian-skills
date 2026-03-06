@@ -1,0 +1,29 @@
+{
+  "eval_id": 6,
+  "eval_name": "web-extract-summarize",
+  "run": "with_skill",
+  "output_chars": 5842,
+  "expectations": [
+    {
+      "text": "used_defuddle",
+      "passed": true,
+      "evidence": "Footer states: 'Extracted using defuddle-cli from https://help.obsidian.md/bases/syntax on 2026-03-06.' This confirms defuddle parse --md was used for extraction."
+    },
+    {
+      "text": "covers_key_features",
+      "passed": true,
+      "evidence": "Summary covers all key features: Filters (section with examples), Formulas (computed properties), Properties Configuration (display config), Summaries (aggregation), and Views (rendering config). Also covers operators, data types, and filter syntax reference."
+    },
+    {
+      "text": "not_raw_html",
+      "passed": true,
+      "evidence": "Output is clean markdown with headers, code blocks, tables, and lists. No raw HTML tags, navigation elements, or unprocessed web content present."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

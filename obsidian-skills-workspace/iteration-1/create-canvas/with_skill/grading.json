@@ -1,0 +1,29 @@
+{
+  "eval_id": 5,
+  "eval_name": "create-canvas",
+  "run": "with_skill",
+  "output_chars": 1676,
+  "expectations": [
+    {
+      "text": "valid_json_canvas",
+      "passed": true,
+      "evidence": "Valid JSON with top-level 'nodes' array (3 text nodes) and 'edges' array (2 edges). Each node has id, type, x, y, width, height, color, and text fields."
+    },
+    {
+      "text": "correct_node_colors",
+      "passed": true,
+      "evidence": "Signal Generation: color '4' (green), Position Manager: color '3' (yellow), Execution Engine: color '1' (red). Matches the spec: green=4, yellow/orange=2or3, red=1."
+    },
+    {
+      "text": "proper_edges",
+      "passed": true,
+      "evidence": "2 edges present: (1) Signal Generation -> Position Manager with label 'Trading Signals', (2) Position Manager -> Execution Engine with label 'Order Instructions'. Both have fromNode, toNode, fromSide, toSide, and label fields."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

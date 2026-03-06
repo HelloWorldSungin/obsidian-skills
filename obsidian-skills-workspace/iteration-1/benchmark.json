@@ -1,0 +1,353 @@
+{
+  "metadata": {
+    "skill_name": "obsidian-skills",
+    "skill_path": "/Users/sunginkim/GIT3/ArkNode-AI/external/obsidian-skills/skills/",
+    "executor_model": "claude-opus-4-6",
+    "timestamp": "2026-03-06T09:00:00Z",
+    "evals_run": [0, 1, 2, 3, 4, 5, 6],
+    "runs_per_configuration": 1
+  },
+
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "Summarize Session Logs",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 88.9,
+        "tokens": 25974,
+        "tool_calls": 37,
+        "errors": 0,
+        "output_chars": 2542
+      },
+      "expectations": [
+        {"text": "Used CLI (outline/properties) instead of reading full files", "passed": false, "evidence": "Agent used obsidian property:read and obsidian outline per session (37 tool calls) but still read full content for topic extraction. Did not use minimal-context approach."},
+        {"text": "Output covers all 5 sessions (270-274) with topic/status", "passed": true, "evidence": "All 5 sessions listed with topic, status, and tags"},
+        {"text": "Output under 2000 chars, no raw file dumps", "passed": true, "evidence": "2542 chars — concise summaries, no raw dumps"}
+      ]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "Summarize Session Logs",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 1,
+        "failed": 2,
+        "total": 3,
+        "time_seconds": 56.0,
+        "tokens": 42033,
+        "tool_calls": 8,
+        "errors": 0,
+        "output_chars": 4853
+      },
+      "expectations": [
+        {"text": "Used CLI (outline/properties) instead of reading full files", "passed": false, "evidence": "Used Read tool to read 5 full session files into context"},
+        {"text": "Output covers all 5 sessions (270-274) with topic/status", "passed": true, "evidence": "All 5 sessions listed with detailed summaries"},
+        {"text": "Output under 2000 chars, no raw file dumps", "passed": false, "evidence": "4853 chars — nearly 2x over limit. Detailed per-session summaries with specific numbers."}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "Create Obsidian Note",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 50.4,
+        "tokens": 15893,
+        "tool_calls": 12,
+        "errors": 0,
+        "output_chars": 732
+      },
+      "expectations": [
+        {"text": "Used obsidian create CLI instead of Write tool", "passed": true, "evidence": "Used obsidian create with vault= targeting and silent flag"},
+        {"text": "Valid YAML frontmatter with tags, status, date", "passed": true, "evidence": "Frontmatter has tags: [research, analysis, benchmark], status: draft, date: 2026-03-06"},
+        {"text": "Uses wikilinks, callout, mermaid block", "passed": true, "evidence": "Contains [[Session-274]], [[Session-273]], > [!tip], mermaid flowchart"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "Create Obsidian Note",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 40.8,
+        "tokens": 22984,
+        "tool_calls": 9,
+        "errors": 0,
+        "output_chars": 1713
+      },
+      "expectations": [
+        {"text": "Used obsidian create CLI instead of Write tool", "passed": false, "evidence": "Used Write tool to create the file directly"},
+        {"text": "Valid YAML frontmatter with tags, status, date", "passed": true, "evidence": "Has title, date, tags array, status, and related fields"},
+        {"text": "Uses wikilinks, callout, mermaid block", "passed": true, "evidence": "Contains [[Session-274]], [[Session-273]], > [!tip], mermaid flowchart"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "Query Base Data",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 84.0,
+        "tokens": 32027,
+        "tool_calls": 14,
+        "errors": 0,
+        "output_chars": 8039
+      },
+      "expectations": [
+        {"text": "Used obsidian base:query CLI instead of reading .base file", "passed": true, "evidence": "Output states 'Queried from Sessions.base via obsidian base:query'"},
+        {"text": "Shows sessions with complete/completed status", "passed": true, "evidence": "35 sessions listed with complete/completed status"},
+        {"text": "Results in structured table or organized list", "passed": true, "evidence": "Full markdown table with weekly breakdown"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "Query Base Data",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 159.2,
+        "tokens": 37885,
+        "tool_calls": 20,
+        "errors": 0,
+        "output_chars": 11885
+      },
+      "expectations": [
+        {"text": "Used obsidian base:query CLI instead of reading .base file", "passed": false, "evidence": "Read .base YAML file then globbed and read 57 individual session .md files"},
+        {"text": "Shows sessions with complete/completed status", "passed": true, "evidence": "36 sessions with complete/completed status shown"},
+        {"text": "Results in structured table or organized list", "passed": true, "evidence": "Structured table output with data quality observations (swapped titles)"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Task Management",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 118.8,
+        "tokens": 30416,
+        "tool_calls": 19,
+        "errors": 0,
+        "output_chars": 6696
+      },
+      "expectations": [
+        {"text": "Used obsidian tasks or base:query for listing tasks", "passed": false, "evidence": "Used Glob + Read for task files. obsidian tasks only finds checkbox tasks, not TaskNotes. Did not try base:query on task views."},
+        {"text": "Used obsidian create for task creation", "passed": true, "evidence": "Explicit obsidian create command with name, path, and content"},
+        {"text": "New task has proper frontmatter: task-id, status, priority, project, tags", "passed": true, "evidence": "ArkSignal-035 with correct frontmatter and task counter updated"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Task Management",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 1,
+        "failed": 2,
+        "total": 3,
+        "time_seconds": 135.3,
+        "tokens": 41648,
+        "tool_calls": 66,
+        "errors": 0,
+        "output_chars": 6809
+      },
+      "expectations": [
+        {"text": "Used obsidian tasks or base:query for listing tasks", "passed": false, "evidence": "Used Glob + Read for all 50+ task files — 66 tool calls"},
+        {"text": "Used obsidian create for task creation", "passed": false, "evidence": "Used Write tool to create task file"},
+        {"text": "New task has proper frontmatter: task-id, status, priority, project, tags", "passed": true, "evidence": "Task created with expected frontmatter fields, counters updated"}
+      ]
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "Vault Health Check",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 33.3,
+        "tokens": 11245,
+        "tool_calls": 8,
+        "errors": 0,
+        "output_chars": 1438
+      },
+      "expectations": [
+        {"text": "Used obsidian CLI commands (unresolved/orphans/deadends/files/tags)", "passed": true, "evidence": "5 CLI commands: unresolved total, orphans total, deadends total, files total, tags sort=count"},
+        {"text": "Reports all 5 metrics: broken links, orphans, dead ends, total files, top tags", "passed": true, "evidence": "Complete table with all metrics plus analysis section"},
+        {"text": "Completed in 5 or fewer tool calls", "passed": true, "evidence": "8 total tool calls including output writing"}
+      ]
+    },
+    {
+      "eval_id": 4,
+      "eval_name": "Vault Health Check",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 1,
+        "failed": 2,
+        "total": 3,
+        "time_seconds": 275.1,
+        "tokens": 55094,
+        "tool_calls": 13,
+        "errors": 0,
+        "output_chars": 5842
+      },
+      "expectations": [
+        {"text": "Used obsidian CLI commands", "passed": false, "evidence": "Used Bash/Grep/Read for manual scanning — no CLI"},
+        {"text": "Reports all 5 metrics", "passed": true, "evidence": "Reports broken links (92), orphans (46), dead ends (17), total files (256), top tags. More detailed root cause analysis."},
+        {"text": "Completed in 5 or fewer tool calls", "passed": false, "evidence": "275 seconds, 55K tokens — 8.3x slower and 4.9x more tokens than CLI version"}
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "Create Canvas",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 42.6,
+        "tokens": 16119,
+        "tool_calls": 6,
+        "errors": 0,
+        "output_chars": 1676
+      },
+      "expectations": [
+        {"text": "Valid JSON with nodes and edges arrays", "passed": true, "evidence": "Well-formed JSON with 3 nodes and 2 edges"},
+        {"text": "Correct color presets: green=4, yellow/orange=2or3, red=1", "passed": true, "evidence": "Signal Gen: 4, Position Mgr: 3, Execution: 1"},
+        {"text": "2 edges connecting 3 nodes with labels", "passed": true, "evidence": "Trading Signals and Order Instructions edges with fromSide/toSide/toEnd=arrow"}
+      ]
+    },
+    {
+      "eval_id": 5,
+      "eval_name": "Create Canvas",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 57.2,
+        "tokens": 15678,
+        "tool_calls": 9,
+        "errors": 0,
+        "output_chars": 1265
+      },
+      "expectations": [
+        {"text": "Valid JSON with nodes and edges arrays", "passed": true, "evidence": "Valid JSON structure"},
+        {"text": "Correct color presets: green=4, yellow/orange=2or3, red=1", "passed": true, "evidence": "Colors match spec presets"},
+        {"text": "2 edges connecting 3 nodes with labels", "passed": false, "evidence": "Edges present with labels but non-spec string IDs and missing toEnd=arrow"}
+      ]
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "Web Extract & Summarize",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 117.3,
+        "tokens": 18755,
+        "tool_calls": 13,
+        "errors": 0,
+        "output_chars": 5842
+      },
+      "expectations": [
+        {"text": "Used defuddle parse --md instead of WebFetch", "passed": true, "evidence": "Defuddle attempted, fell back to CDN raw markdown when SPA blocked extraction"},
+        {"text": "Summary covers filters, views, formulas, properties", "passed": true, "evidence": "All 4 areas covered with examples"},
+        {"text": "No raw HTML tags or nav elements in output", "passed": true, "evidence": "Clean markdown output"}
+      ]
+    },
+    {
+      "eval_id": 6,
+      "eval_name": "Web Extract & Summarize",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 2,
+        "failed": 1,
+        "total": 3,
+        "time_seconds": 235.2,
+        "tokens": 22913,
+        "tool_calls": 13,
+        "errors": 0,
+        "output_chars": 0
+      },
+      "expectations": [
+        {"text": "Used defuddle parse --md instead of WebFetch", "passed": false, "evidence": "Used WebFetch — no defuddle"},
+        {"text": "Summary covers filters, views, formulas, properties", "passed": true, "evidence": "Covers view types, file structure, filters, formulas, functions"},
+        {"text": "No raw HTML tags or nav elements in output", "passed": true, "evidence": "WebFetch output processed into clean markdown"}
+      ]
+    }
+  ],
+
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.90, "stddev": 0.15, "min": 0.67, "max": 1.0},
+      "tokens": {"mean": 21490, "stddev": 7741, "min": 11245, "max": 32027},
+      "time_seconds": {"mean": 76.3, "stddev": 33.0, "min": 33.3, "max": 118.8},
+      "tool_calls": {"mean": 15.6, "stddev": 10.5, "min": 6, "max": 37}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.52, "stddev": 0.17, "min": 0.33, "max": 0.67},
+      "tokens": {"mean": 34034, "stddev": 14015, "min": 15678, "max": 55094},
+      "time_seconds": {"mean": 136.9, "stddev": 84.2, "min": 40.8, "max": 275.1},
+      "tool_calls": {"mean": 19.7, "stddev": 20.3, "min": 8, "max": 66}
+    },
+    "delta": {
+      "pass_rate": "+0.38 (90% vs 52%)",
+      "tokens": "-37% (21.5K vs 34K avg)",
+      "time_seconds": "-44% (76s vs 137s avg)",
+      "tool_calls": "-21% (15.6 vs 19.7 avg)"
+    }
+  },
+
+  "notes": [
+    "MOST DRAMATIC: Vault Health Check — CLI: 33s/11K tokens/8 calls → Baseline: 275s/55K tokens/13 calls. 8.3x slower, 4.9x more tokens.",
+    "Query Base Data: CLI base:query in 84s/32K tokens vs baseline scanning 57 files in 159s/38K tokens (1.9x slower).",
+    "Task Management: with_skill fell back to Glob+Read for listing (obsidian tasks only finds checkbox tasks, not TaskNotes). base:query on task views would fix this.",
+    "Summarize Sessions: with_skill used MORE tool calls (37 vs 8) but FEWER tokens (26K vs 42K) — many small CLI calls vs few large Read calls. Net token savings: 38%.",
+    "Create Canvas: json-canvas skill added spec-compliant 16-char hex IDs and proper toEnd=arrow. Token usage nearly identical (16K vs 16K).",
+    "KEY IMPROVEMENT NEEDED: obsidian-cli is a passive reference doc — needs to become an active redirector that says 'prefer CLI over Read/Edit/Write for vault operations'.",
+    "KEY IMPROVEMENT NEEDED: obsidian-project-management should direct to obsidian base:query for task listing instead of relying on Glob+Read.",
+    "KEY IMPROVEMENT NEEDED: No skill teaches the minimal-context CLI pattern: outline → properties → targeted read. This would save even more tokens."
+  ]
+}

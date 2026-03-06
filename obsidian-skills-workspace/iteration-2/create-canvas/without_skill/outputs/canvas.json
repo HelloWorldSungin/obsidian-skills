@@ -1,0 +1,11 @@
+{
+	"nodes":[
+		{"id":"signal-generation","type":"text","text":"# Signal Generation\n\nAnalyzes market data using ML models (XGBoost + Platt calibration) to produce calibrated probability scores across 35+ technical indicators. Signals are filtered through MetaLabel RF and regime detection before emission.","x":-400,"y":0,"width":300,"height":200,"color":"4"},
+		{"id":"position-manager","type":"text","text":"# Position Manager\n\nReceives validated signals and determines position sizing, entry/exit timing, and risk limits. Manages open positions across multiple strategies, enforcing per-strategy thresholds and portfolio-level constraints.","x":140,"y":0,"width":300,"height":200,"color":"3"},
+		{"id":"execution-engine","type":"text","text":"# Execution Engine\n\nExecutes trades on the exchange via the unified executor. Handles order routing (paper vs live), fill tracking, and slippage management. Logs all activity to PostgreSQL and reports to the real-time monitor dashboard.","x":680,"y":0,"width":300,"height":200,"color":"1"}
+	],
+	"edges":[
+		{"id":"signal-to-position","fromNode":"signal-generation","fromSide":"right","toNode":"position-manager","toSide":"left","toEnd":"arrow","label":"Calibrated Signals"},
+		{"id":"position-to-execution","fromNode":"position-manager","fromSide":"right","toNode":"execution-engine","toSide":"left","toEnd":"arrow","label":"Sized Orders"}
+	]
+}

@@ -1,0 +1,29 @@
+{
+  "eval_id": 0,
+  "eval_name": "summarize-session-logs",
+  "run": "with_skill",
+  "output_chars": 2542,
+  "expectations": [
+    {
+      "text": "used_cli_or_minimal_reads",
+      "passed": true,
+      "evidence": "Output is concisely structured with topic/status/tags per session, consistent with CLI-based extraction (obsidian outline/properties). No raw file dumps or verbose content suggesting full file reads."
+    },
+    {
+      "text": "all_sessions_covered",
+      "passed": true,
+      "evidence": "All 5 sessions covered: Session-270 (Per-Direction Condition Filters), Session-271 (Strategy-Type-Specific Feature Sets), Session-272 (New Engineered Features), Session-273 (Systematic Ablation), Session-274 (Direction Model Target Engineering). Each has topic, status=complete, and tags."
+    },
+    {
+      "text": "concise_output",
+      "passed": false,
+      "evidence": "Output is 2542 characters, exceeding the 2000-character threshold."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.67
+  }
+}

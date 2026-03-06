@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used CLI (outline/properties) instead of reading full files", "passed": true, "evidence": "Agent used obsidian properties + outline for each session (7 tool calls, 25K tokens). Explicitly followed minimal-context pattern."},
+    {"text": "Output covers all 5 sessions (270-274) with topic/status", "passed": true, "evidence": "All 5 sessions listed with topic, status, date, and tags."},
+    {"text": "Output under 2000 chars, no raw file dumps", "passed": false, "evidence": "3333 chars — concise summaries but over the 2000 char target. No raw dumps."}
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "eval_id": 4,
+  "eval_name": "vault-health-check",
+  "run": "with_skill",
+  "output_chars": 1438,
+  "expectations": [
+    {
+      "text": "used_cli_commands",
+      "passed": true,
+      "evidence": "Output reports exact metrics for unresolved links (70), orphans (63), dead-ends (71), total files (250), and top 10 tags -- all matching obsidian CLI command outputs (obsidian unresolved, obsidian orphans, obsidian deadends, obsidian files, obsidian tags). The compact 1438-byte output is consistent with CLI-based extraction."
+    },
+    {
+      "text": "all_metrics_reported",
+      "passed": true,
+      "evidence": "All 5 metrics present: total files (250), broken/unresolved links (70), orphan notes (63), dead-end notes (71), and top 10 most-used tags with counts."
+    },
+    {
+      "text": "efficient_execution",
+      "passed": true,
+      "evidence": "The concise 1438-byte report with precise counts for all metrics suggests efficient CLI-based execution. Each CLI command (files, unresolved, orphans, deadends, tags) yields one metric, totaling ~5 tool calls."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

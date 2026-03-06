@@ -1,11 +1,62 @@
 ---
 name: obsidian-cli
-description: Interact with Obsidian vaults using the `obsidian` CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
+description: Interact with Obsidian vaults using the `obsidian` CLI to read, create, search, and manage notes, tasks, properties, and more. ALWAYS prefer CLI commands over Read/Edit/Write/Grep tools for vault operations — the CLI uses Obsidian's live index, saving significant context window tokens. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, query bases, create or edit notes, perform vault health checks, or develop and debug Obsidian plugins and themes.
 ---
 
 # Obsidian CLI Reference
 
 Use the `obsidian` CLI to interact with a running Obsidian instance. Requires **Obsidian 1.10+** to be open. Run `obsidian help` or `obsidian help <command>` for the latest parameter details.
+
+---
+
+## CLI-First Principles
+
+The `obsidian` CLI talks directly to Obsidian's live index — it knows about links, tags, properties, and base views without scanning files. This makes it dramatically faster and lighter than using Read/Grep/Glob on vault files.
+
+**Prefer CLI over Claude Code tools for vault operations:**
+
+| Task | Use CLI | NOT this |
+|------|---------|----------|
+| Read note content | `obsidian read file="Note"` | `Read` tool on `.md` file |
+| Create a note | `obsidian create name="Note" content="..." silent` | `Write` tool |
+| Edit properties | `obsidian property:set name="status" value="done" file="Note"` | `Edit` tool on frontmatter |
+| Search vault | `obsidian search query="keyword"` | `Grep` across vault files |
+| List files | `obsidian files path="Folder/"` | `Glob` pattern matching |
+| Query structured data | `obsidian base:query path="Views/Tasks.base"` | Reading `.base` + scanning all matching files |
+| Vault health metrics | `obsidian unresolved total` / `orphans total` / `deadends total` | Manual link analysis with Grep |
+
+### Minimal-Context Pattern
+
+When you need to understand a note's content, gather metadata first before reading full content. This can save thousands of tokens:
+
+```bash
+# Step 1: Check structure (headings only — very small output)
+obsidian outline file="Session-274"
+
+# Step 2: Read properties (frontmatter only — no body content)
+obsidian properties file="Session-274"
+
+# Step 3: Only if needed, read the full note (or a specific section)
+obsidian read file="Session-274"
+```
+
+For multi-file tasks (summarizing, auditing, comparing), use `outline` and `properties` across files first, then selectively `read` only the files that need deeper inspection. This avoids loading entire note bodies into the context window.
+
+### CLI for Note Creation
+
+When creating notes in a vault, use `obsidian create` + `property:set` + `append` instead of the `Write` tool. This ensures Obsidian's index updates immediately (no need to wait for file-watcher).
+
+```bash
+# Create with initial content
+obsidian create name="My Note" path="Projects/" content="# My Note\n\nContent here." silent
+
+# Set frontmatter properties
+obsidian property:set name="tags" value="[\"project\",\"active\"]" file="My Note"
+obsidian property:set name="status" value="draft" file="My Note"
+
+# Append additional content
+obsidian append file="My Note" content="\n## Section Two\nMore content."
+```
 
 ---
 
@@ -307,6 +358,30 @@ Execute any Obsidian command by ID.
 
 ## Common Recipes
 
+### Summarize multiple notes efficiently
+
+```bash
+# Get structure + properties for each note (minimal tokens)
+for n in 270 271 272 273 274; do
+  echo "=== Session-$n ==="
+  obsidian properties file="Session-$n"
+  obsidian outline file="Session-$n"
+done
+# Only read full content for notes that need deeper inspection
+obsidian read file="Session-274"
+```
+
+### Query structured data from Bases
+
+```bash
+# Query a base view — returns structured data without reading individual files
+obsidian base:query path="TaskNotes/Views/tasks-default.base" format=md
+
+# List available bases and views
+obsidian bases
+obsidian base:views path="TaskNotes/Views/tasks-default.base"
+```
+
 ### Find and fix broken links
 
 ```bash
@@ -316,15 +391,14 @@ obsidian unresolved --copy
 obsidian create name="Missing Page" content="# Missing Page\nTODO: fill in" silent
 ```
 
-### Weekly review workflow
+### Vault health check (5 CLI calls)
 
 ```bash
-# Check incomplete tasks from this week
-obsidian tasks todo path="Daily/" limit=50
-# Read today's daily note
-obsidian daily:read
-# Append a review section
-obsidian daily:append content="\n## Weekly Review\n- [ ] Review open tasks\n- [ ] Update project status\n- [ ] Plan next week"
+obsidian unresolved total    # Broken link count
+obsidian orphans total       # Orphan note count
+obsidian deadends total      # Dead-end note count
+obsidian files total         # Total file count
+obsidian tags sort=count     # Tag frequency
 ```
 
 ### Bulk update a property across files
@@ -337,30 +411,6 @@ obsidian property:set name="version" value="2.0" file="Project A"
 obsidian property:set name="version" value="2.0" file="Project B"
 ```
 
-### Audit vault structure
-
-```bash
-# Orphan notes (no backlinks)
-obsidian orphans total
-# Dead-end notes (no outgoing links)
-obsidian deadends total
-# All unresolved links
-obsidian unresolved total
-```
-
-### Plugin development cycle
-
-```bash
-# Make code changes, then reload
-obsidian plugin:reload id=my-plugin
-# Check for errors
-obsidian dev:errors
-# Check console output
-obsidian dev:console level=error limit=10
-# Visual check
-obsidian dev:screenshot path=after-change.png
-```
-
 ### Create a note from template and tag it
 
 ```bash
@@ -369,20 +419,18 @@ obsidian property:set name="type" value="standup" file="2026-02-23 Standup"
 obsidian property:set name="status" value="draft" file="2026-02-23 Standup"
 ```
 
-### Search with context and bookmark results
+### Plugin development cycle
 
 ```bash
-# Find references with surrounding context
-obsidian search:context query="refactor" lines=3 limit=5
-# Bookmark important findings
-obsidian bookmark file="Architecture Decision"
+obsidian plugin:reload id=my-plugin
+obsidian dev:errors
+obsidian dev:console level=error limit=10
+obsidian dev:screenshot path=after-change.png
 ```
 
 ### Daily note quick capture
 
 ```bash
-# Append a task
 obsidian daily:append content="- [ ] Fix login bug #urgent"
-# Append a note
 obsidian daily:append content="\n> Idea: cache invalidation strategy for the API layer"
 ```

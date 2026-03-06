@@ -1,0 +1,173 @@
+{
+  "skill_name": "obsidian-skills",
+  "evals": [
+    {
+      "id": 0,
+      "name": "summarize-session-logs",
+      "prompt": "I need to understand what happened in my recent session logs — specifically Session-270 through Session-274. They're in my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault/Trading-Signal-AI/Session-Logs/. For each session, tell me: the topic (from the title or heading), the status, and the tags. Don't dump the full content — just a concise summary of each.",
+      "expected_output": "A concise summary of 5 sessions with topic, status, and tags for each. Should NOT contain full file contents.",
+      "assertions": [
+        {
+          "name": "used_cli_or_minimal_reads",
+          "description": "Agent used obsidian CLI commands (outline, properties, search) OR read files with minimal context, rather than reading 5 full session files",
+          "type": "transcript_check"
+        },
+        {
+          "name": "all_sessions_covered",
+          "description": "Output mentions all 5 sessions (270-274) with topic/status info",
+          "type": "output_check"
+        },
+        {
+          "name": "concise_output",
+          "description": "Final output is under 2000 characters — agent didn't dump raw file contents",
+          "type": "output_check"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "create-obsidian-note",
+      "prompt": "Create a new research note called 'Benchmark-Analysis' in my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault/Trading-Signal-AI/Research/. It should have: proper YAML frontmatter with tags (research, analysis, benchmark), status: draft, date: 2026-03-06. In the body include wikilinks to [[Session-274]] and [[Session-273]], a tip callout with placeholder text, and a mermaid flowchart showing Input -> Processing -> Output. Use proper Obsidian markdown syntax.",
+      "expected_output": "A new .md file created with valid Obsidian frontmatter, wikilinks, callout, and mermaid diagram",
+      "assertions": [
+        {
+          "name": "used_cli_create",
+          "description": "Agent used 'obsidian create' CLI command rather than the Write tool to create the file",
+          "type": "transcript_check"
+        },
+        {
+          "name": "valid_frontmatter",
+          "description": "File has valid YAML frontmatter with tags, status, and date",
+          "type": "output_check"
+        },
+        {
+          "name": "obsidian_syntax",
+          "description": "File uses proper Obsidian syntax: wikilinks ([[...]]), callout (> [!tip]), mermaid block",
+          "type": "output_check"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "query-base-data",
+      "prompt": "I want to see data from my Sessions.base in my Obsidian vault. The base file is at Trading-Signal-AI/Session-Logs/Sessions.base. Show me all sessions that have 'complete' status. Format the results nicely.",
+      "expected_output": "Structured table/list of sessions with complete status, pulled from the base view",
+      "assertions": [
+        {
+          "name": "used_base_query",
+          "description": "Agent used 'obsidian base:query' CLI command rather than reading the .base YAML file directly",
+          "type": "transcript_check"
+        },
+        {
+          "name": "shows_complete_sessions",
+          "description": "Output shows sessions with complete/completed status",
+          "type": "output_check"
+        },
+        {
+          "name": "structured_output",
+          "description": "Results are presented in a structured format (table or organized list)",
+          "type": "output_check"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "task-management",
+      "prompt": "Show me all the tasks in my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault — I want to see what's on my plate. Group them by status if possible. Then create a new task called 'Benchmark Obsidian Skills' with project trading-signal-ai, priority high, and status todo.",
+      "expected_output": "List of tasks grouped by status, plus a new task file created with proper TaskNotes frontmatter",
+      "assertions": [
+        {
+          "name": "used_cli_for_listing",
+          "description": "Agent used 'obsidian tasks' or 'obsidian base:query' to list tasks rather than globbing and reading individual files",
+          "type": "transcript_check"
+        },
+        {
+          "name": "used_cli_for_creation",
+          "description": "Agent used 'obsidian create' with proper frontmatter rather than Write tool",
+          "type": "transcript_check"
+        },
+        {
+          "name": "task_created_correctly",
+          "description": "New task has proper frontmatter: task-id, status: todo, priority: high, project: trading-signal-ai, tags: [task]",
+          "type": "output_check"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "vault-health-check",
+      "prompt": "Run a full health check on my Obsidian vault at /Users/sunginkim/GIT3/ArkNode-AI/vault. I want to know: how many broken links, orphan notes, dead-end notes, total files, and give me the top 10 most-used tags with counts.",
+      "expected_output": "Vault health report with counts for broken links, orphans, dead ends, total files, and top tags",
+      "assertions": [
+        {
+          "name": "used_cli_commands",
+          "description": "Agent used obsidian CLI commands (unresolved, orphans, deadends, files, tags) rather than manual file scanning",
+          "type": "transcript_check"
+        },
+        {
+          "name": "all_metrics_reported",
+          "description": "Output includes counts for: broken links, orphans, dead ends, total files, and top tags",
+          "type": "output_check"
+        },
+        {
+          "name": "efficient_execution",
+          "description": "Health check completed in 5 or fewer tool calls",
+          "type": "transcript_check"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "name": "create-canvas",
+      "prompt": "Create a canvas file at /Users/sunginkim/GIT3/ArkNode-AI/vault/Trading-Signal-AI/Strategy-Overview.canvas showing a flowchart of the trading pipeline: 'Signal Generation' (green) connects to 'Position Manager' (yellow) which connects to 'Execution Engine' (red). Each node should have a brief description. Add labeled edges between them.",
+      "expected_output": "Valid JSON Canvas file with 3 colored text nodes and 2 labeled edges forming a left-to-right flowchart",
+      "assertions": [
+        {
+          "name": "valid_json_canvas",
+          "description": "File is valid JSON with 'nodes' and 'edges' arrays",
+          "type": "output_check"
+        },
+        {
+          "name": "correct_node_colors",
+          "description": "Nodes use correct color presets: green (4), yellow/orange (2 or 3), red (1)",
+          "type": "output_check"
+        },
+        {
+          "name": "proper_edges",
+          "description": "2 edges connecting the 3 nodes in sequence with labels",
+          "type": "output_check"
+        }
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "name": "web-extract-summarize",
+      "prompt": "I want to understand Obsidian's Bases syntax. Extract the content from https://help.obsidian.md/bases/syntax and give me a summary of the key features and filter syntax.",
+      "expected_output": "Clean summary of Bases syntax covering filters, views, formulas, and properties",
+      "assertions": [
+        {
+          "name": "used_defuddle",
+          "description": "Agent used 'defuddle parse --md' rather than WebFetch to extract page content",
+          "type": "transcript_check"
+        },
+        {
+          "name": "covers_key_features",
+          "description": "Summary covers filters, views, formulas, and/or properties",
+          "type": "output_check"
+        },
+        {
+          "name": "not_raw_html",
+          "description": "Output does not contain raw HTML tags or navigation elements",
+          "type": "output_check"
+        }
+      ],
+      "files": []
+    }
+  ]
+}

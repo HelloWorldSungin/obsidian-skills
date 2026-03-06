@@ -1,0 +1,29 @@
+{
+  "eval_id": 1,
+  "eval_name": "create-obsidian-note",
+  "run": "without_skill",
+  "output_chars": 1713,
+  "expectations": [
+    {
+      "text": "used_cli_create",
+      "passed": false,
+      "evidence": "Without-skill run used only Read/Grep/Glob/Write tools. No CLI commands available or used for file creation."
+    },
+    {
+      "text": "valid_frontmatter",
+      "passed": true,
+      "evidence": "Valid YAML frontmatter with title, date (2026-03-06), tags (research, analysis, benchmark), status (draft), and related wikilinks."
+    },
+    {
+      "text": "obsidian_syntax",
+      "passed": true,
+      "evidence": "Contains wikilinks ([[Session-274]], [[Session-273]]), callout (> [!tip] Getting Started), and mermaid block (flowchart TD). Also includes a markdown table and task list."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.67
+  }
+}

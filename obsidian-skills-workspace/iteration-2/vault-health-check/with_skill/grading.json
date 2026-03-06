@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian CLI commands (unresolved/orphans/deadends/files/tags)", "passed": true, "evidence": "Used obsidian unresolved, orphans, deadends, files, tags CLI commands."},
+    {"text": "Reports all 5 metrics: broken links, orphans, dead ends, total files, top tags", "passed": true, "evidence": "Complete report: broken links (70), orphans (67), dead ends (75), total files (254), top 10 tags with counts."},
+    {"text": "Completed in 5 or fewer tool calls", "passed": false, "evidence": "14 total tool calls (includes skill reads + output write + additional analysis). CLI queries alone ~5."}
+  ]
+}

@@ -1,0 +1,124 @@
+# Obsidian Vault Task Report
+
+**Generated:** 2026-03-06
+**Vault:** `/Users/sunginkim/GIT3/ArkNode-AI/vault`
+
+---
+
+## Summary
+
+| Status | Count |
+|--------|-------|
+| **todo** | 20 |
+| **backlog** | 18 |
+| **done** (archived) | 11 |
+| **closed** | 1 |
+| **Total** | 50 |
+
+---
+
+## Tasks Grouped by Status
+
+### TODO (20 tasks)
+
+| ID | Title | Type | Priority | Project | Component |
+|----|-------|------|----------|---------|-----------|
+| Infra-017 | CT110 Claude Code Dev Environment | epic | high | infrastructure | ct110 |
+| Infra-023 | Workflow Visualization: Grafana + Prefect | epic | high | infrastructure | ct120 |
+| Infra-018 | Create dev User on CT110 | story | high | infrastructure | ct110 |
+| Infra-019 | Set Up Git Worktree Workspaces | story | high | infrastructure | ct110 |
+| Infra-020 | Configure Claude Code for dev User | story | high | infrastructure | ct110 |
+| Infra-024 | Install Grafana Infinity Datasource Plugin | story | high | infrastructure | ct120 |
+| Infra-025 | Add Missing Health Endpoints & GPU Metrics Exporter | story | high | infrastructure | ct100 |
+| Infra-026 | Create Grafana Service Health Dashboard | story | high | infrastructure | ct120 |
+| Infra-028 | Install & Configure Prefect Server on CT120 | story | high | infrastructure | ct120 |
+| Infra-029 | Set Up Prefect Worker on CT110 | story | high | infrastructure | ct110 |
+| Infra-030 | Wrap Monthly Retraining Pipeline as Prefect Flow | story | high | trading-signal-ai | ct110 |
+| Infra-031 | Wrap Quarterly TFT Training as Prefect Flow | story | high | trading-signal-ai | ct110 |
+| Infra-021 | Configure Shell & tmux Environment | story | medium | infrastructure | ct110 |
+| Infra-022 | End-to-End Verification | story | medium | infrastructure | ct110 |
+| Infra-027 | Create Grafana Pipeline Topology Dashboard | story | medium | infrastructure | ct120 |
+| Infra-032 | Wrap Walk-Forward Validation as Prefect Flow | story | medium | trading-signal-ai | ct110 |
+| Infra-033 | Connect Grafana <-> Prefect (Flow Status Panel + Alerts) | story | medium | infrastructure | ct120 |
+| Infra-034 | End-to-End Verification & Cross-Linking | story | medium | infrastructure | ct120 |
+| ArkSignal-035 | Benchmark Obsidian Skills | task | high | trading-signal-ai | none |
+
+> **Note:** 19 pre-existing + 1 newly created (ArkSignal-035).
+
+### BACKLOG (18 tasks)
+
+| ID | Title | Type | Priority | Project | Component |
+|----|-------|------|----------|---------|-----------|
+| Infra-002 | CT110 Dev Deployment & E2E Testing | epic | high | infrastructure | ct110 |
+| Infra-003 | Monitor Dashboard Transformation | epic | high | infrastructure | ct100 |
+| ArkSignal-013 | Freqtrade Integration: ML Signal Pipeline + Execution Engine | epic | high | trading-signal-ai | ct100 |
+| Infra-004 | Remove JT Indicator Signal Monitoring | story | high | infrastructure | ct100 |
+| Infra-005 | Create OHLCV Service Health Monitor | story | high | infrastructure | ct100 |
+| Infra-006 | Create Futures Data Monitor | story | high | infrastructure | ct100 |
+| Infra-007 | Create Inference API Health Monitor | story | high | infrastructure | ct100 |
+| Infra-008 | Create Position Manager Status Monitor | story | high | infrastructure | ct100 |
+| Infra-009 | Transform ML Page to Health Page | story | high | infrastructure | ct100 |
+| Infra-010 | Create Infrastructure Health Monitor | story | high | infrastructure | ct100 |
+| Infra-011 | Audit CT110 Current State | story | high | infrastructure | ct110 |
+| Infra-012 | Create CT110 Service Parity Checklist | story | high | infrastructure | ct110 |
+| Infra-013 | Implement CT110 Deployment Automation | story | high | infrastructure | ct110 |
+| Infra-014 | Design E2E Testing Framework | story | high | infrastructure | ct110 |
+| Infra-015 | Implement E2E Test Suite | story | high | infrastructure | ct110 |
+| Infra-016 | Create Deployment Validation Workflow | story | high | infrastructure | ct110 |
+| ArkClaw-001 | TinyClaw Opencode Integration | epic | medium | tinyclaw | ct100 |
+| ArkClaw-003 | Add Opencode Provider Support | story | medium | tinyclaw | ct100 |
+| ArkClaw-004 | Implement Engine Selection Logic | story | medium | tinyclaw | ct100 |
+| ArkClaw-005 | Update Agent Configurations | story | medium | tinyclaw | ct100 |
+| ArkClaw-006 | Update Documentation and Types | story | medium | tinyclaw | ct100 |
+
+> **Note:** The archived `Infra-002` in Archive/ is a superseded version. The active `Infra-002` epic lives in `Tasks/Epic/`.
+
+### CLOSED (1 task)
+
+| ID | Title | Type | Priority | Project | Component |
+|----|-------|------|----------|---------|-----------|
+| ArkSignal-034 | Build TFT Live Inference Pipeline for Production Trading | story | low | trading-signal-ai | ct110 |
+
+### DONE / ARCHIVED (11 tasks)
+
+| ID | Title | Type | Priority | Project |
+|----|-------|------|----------|---------|
+| ArkSignal-001 | QuanLLM research | task | normal | trading-signal-ai |
+| TASK-003 | Use vectorBT for optimal capital allocation/leverage | task | high | trading-signal-ai |
+| ArkSignal-003 | Fix ML flow | task | normal | trading-signal-ai |
+| ArkSignal-004 | Implement Market Condition Filters | task | high | trading-signal-ai |
+| ArkSignal-005 | ArkSignal Unified Backtest Framework | epic | medium | trading-signal-ai |
+| ArkSignal-007 | Design BacktestEngine Core Architecture | story | medium | trading-signal-ai |
+| ArkSignal-008 | Implement Strategy-Agnostic Data Pipeline | story | medium | trading-signal-ai |
+| ArkSignal-009 | Implement Distributed Execution Framework | story | medium | trading-signal-ai |
+| ArkSignal-010 | Implement Unified Metrics & Reporting | story | medium | trading-signal-ai |
+| ArkSignal-011 | Implement Rolling Validation Framework | story | medium | trading-signal-ai |
+| ArkSignal-012 | Migrate Existing Backtests to Framework | story | medium | trading-signal-ai |
+| Infra-001 | Migrate notes | task | low | infrastructure |
+| Infra-002 (archived) | Dev Deployment CT110 (superseded) | task | high | infrastructure |
+
+---
+
+## New Task Created
+
+**File:** `/Users/sunginkim/GIT3/ArkNode-AI/vault/TaskNotes/Tasks/Task/ArkSignal-035-benchmark-obsidian-skills.md`
+
+```yaml
+task-id: ArkSignal-035
+title: "Benchmark Obsidian Skills"
+status: todo
+priority: high
+project: trading-signal-ai
+task-type: task
+created: 2026-03-06
+```
+
+**Counters updated:**
+- `task-counter`: 035 -> 036
+- `ArkSignal-counter`: 25 -> 35
+
+---
+
+## Methodology
+
+This report was generated by manually reading every `.md` file under `vault/TaskNotes/Tasks/` (Epic/, Story/, Task/) and `vault/TaskNotes/Archive/` using only Read, Grep, Glob, and Write tools -- no CLI commands or skills were used. Frontmatter properties (`status`, `priority`, `project`, `task-type`, `task-id`, `title`) were extracted from each file to build the grouped listing above.

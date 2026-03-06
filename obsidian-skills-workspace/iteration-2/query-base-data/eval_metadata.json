@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "query-base-data",
+  "prompt": "see evals.json id=2",
+  "assertions": []
+}

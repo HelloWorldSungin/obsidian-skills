@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian base:query CLI instead of reading .base file", "passed": false, "evidence": "Read .base file then parsed frontmatter from individual session files (16 tool calls, 29K tokens)."},
+    {"text": "Shows sessions with complete/completed status", "passed": true, "evidence": "24 sessions with complete status shown. Noted 11 completed sessions."},
+    {"text": "Results in structured table or organized list", "passed": true, "evidence": "Structured markdown output with tables and grouping."}
+  ]
+}

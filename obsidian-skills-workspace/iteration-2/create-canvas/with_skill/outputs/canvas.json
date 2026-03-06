@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "id": "a1b2c3d4e5f60001",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 220,
+      "color": "4",
+      "text": "# Signal Generation\n\nProduces buy/sell signals from market data using ML models (XGBoost/Platt calibration). Ingests OHLCV feeds, computes features, and outputs probability-scored trade signals."
+    },
+    {
+      "id": "a1b2c3d4e5f60002",
+      "type": "text",
+      "x": 480,
+      "y": 0,
+      "width": 360,
+      "height": 220,
+      "color": "3",
+      "text": "# Position Manager\n\nReceives scored signals and decides position sizing, risk limits, and portfolio allocation. Enforces stop-loss, take-profit, and maximum exposure constraints before forwarding orders."
+    },
+    {
+      "id": "a1b2c3d4e5f60003",
+      "type": "text",
+      "x": 960,
+      "y": 0,
+      "width": 360,
+      "height": 220,
+      "color": "1",
+      "text": "# Execution Engine\n\nExecutes validated orders against the exchange API. Handles order routing, fill tracking, slippage management, and real-time execution reporting back to the pipeline."
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1f2a3b4c5d60001",
+      "fromNode": "a1b2c3d4e5f60001",
+      "fromSide": "right",
+      "fromEnd": "none",
+      "toNode": "a1b2c3d4e5f60002",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Scored Signals"
+    },
+    {
+      "id": "e1f2a3b4c5d60002",
+      "fromNode": "a1b2c3d4e5f60002",
+      "fromSide": "right",
+      "fromEnd": "none",
+      "toNode": "a1b2c3d4e5f60003",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Validated Orders"
+    }
+  ]
+}

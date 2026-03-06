@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used obsidian base:query CLI instead of reading .base file", "passed": true, "evidence": "Used obsidian base:query path=... format=json to pull data from Obsidian's live index."},
+    {"text": "Shows sessions with complete/completed status", "passed": true, "evidence": "24 sessions with status 'complete' shown. Noted 11 additional 'completed' sessions."},
+    {"text": "Results in structured table or organized list", "passed": true, "evidence": "Markdown table with session number, date, and tags."}
+  ]
+}

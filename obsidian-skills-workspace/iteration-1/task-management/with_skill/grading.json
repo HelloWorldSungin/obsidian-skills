@@ -1,0 +1,29 @@
+{
+  "eval_id": 3,
+  "eval_name": "task-management",
+  "run": "with_skill",
+  "output_chars": 6696,
+  "expectations": [
+    {
+      "text": "used_cli_for_listing",
+      "passed": false,
+      "evidence": "Method section states: 'Discovery: Used Glob to find all .md files under TaskNotes/Tasks/ and TaskNotes/Archive/. Metadata extraction: Parsed YAML frontmatter from each task file.' Listing was done via Glob + manual parsing, not obsidian tasks or base:query CLI."
+    },
+    {
+      "text": "used_cli_for_creation",
+      "passed": true,
+      "evidence": "Method section confirms: 'Task creation: Used obsidian create with name=, path=, and content= parameters (per obsidian-cli SKILL.md syntax).' CLI command shown in output: 'obsidian create name=\"ArkSignal-035-benchmark-obsidian-skills\" path=\"TaskNotes/Tasks/Story/\" content=...'"
+    },
+    {
+      "text": "task_created_correctly",
+      "passed": true,
+      "evidence": "Task ArkSignal-035 created with proper frontmatter: task-id (ArkSignal-035), status (todo), priority (high), project (trading-signal-ai), task-type (story), tags (task), created date. Counter updated from 034 to 035. Verified via obsidian read."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.67
+  }
+}

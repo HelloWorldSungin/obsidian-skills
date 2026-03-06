@@ -1,0 +1,7 @@
+{
+  "expectations": [
+    {"text": "Used defuddle parse --md instead of WebFetch", "passed": true, "evidence": "Defuddle attempted first per skill. SPA blocked extraction, fell back to publish endpoint CDN raw markdown."},
+    {"text": "Summary covers filters, views, formulas, properties", "passed": true, "evidence": "Covers filters, views, formulas, summaries, properties, operators, data types, and file properties."},
+    {"text": "No raw HTML tags or nav elements in output", "passed": true, "evidence": "Clean markdown output."}
+  ]
+}

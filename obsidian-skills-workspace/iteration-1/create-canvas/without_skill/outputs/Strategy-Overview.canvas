@@ -1,0 +1,11 @@
+{
+	"nodes":[
+		{"id":"signal_generation","type":"text","text":"# Signal Generation\n\nProduces buy/sell signals from market data using ML models (XGBoost + Platt calibration). Ingests OHLCV candles and technical indicators to output probability-scored trading signals.","x":-400,"y":0,"width":280,"height":200,"color":"4"},
+		{"id":"position_manager","type":"text","text":"# Position Manager\n\nEvaluates incoming signals against current portfolio state, risk limits, and position sizing rules. Determines whether to open, close, or adjust positions based on signal confidence and exposure constraints.","x":100,"y":0,"width":280,"height":200,"color":"3"},
+		{"id":"execution_engine","type":"text","text":"# Execution Engine\n\nExecutes approved orders on the exchange (Hyperliquid). Handles order routing, fill tracking, and trade logging. Supports both paper and live trading backends.","x":600,"y":0,"width":280,"height":200,"color":"1"}
+	],
+	"edges":[
+		{"id":"signal_to_position","fromNode":"signal_generation","fromSide":"right","toNode":"position_manager","toSide":"left","label":"scored signals"},
+		{"id":"position_to_execution","fromNode":"position_manager","fromSide":"right","toNode":"execution_engine","toSide":"left","label":"order instructions"}
+	]
+}
